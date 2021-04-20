@@ -35,6 +35,11 @@ function getInputInfos(){
     const getQntNumber = document.querySelector(".inputs .questions-number");
     const getLevelNumber = document.querySelector(".inputs .level-number");
 
+    const displayCreateQuestion = document.querySelector(".container-create-questions");
+    const hideCreateFeature = document.querySelector(".container-new-quiz");
+    hideCreateFeature.classList.add("hidden");
+    displayCreateQuestion.classList.remove("hidden");
+
     // console.log(getTitle.value);
     // console.log(getUlrImage.value);
     // console.log(getQntNumber.value);
