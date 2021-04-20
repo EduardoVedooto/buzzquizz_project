@@ -31,13 +31,13 @@
     </div>
     <div class="container-new-quiz hidden">
         <h2>Comece pelo começo</h2>
-        <div class="inputs">
-            <input type="text" placeholder="Título do seu quizz" class="title">
-            <input type="url" placeholder="URL da imagem do seu quizz" class="ulr-img">
+        <form class="inputs">
+            <input type="text" placeholder="Título do seu quizz" class="title" maxlength="65">
+            <input type="url" placeholder="URL da imagem do seu quizz" class="ulr-img" required>
             <input type="number" placeholder="Quantidade de perguntas do quizz" class="questions-number">
             <input type="number" placeholder="Quantidade de níveis do quizz" class="level-number">
-        </div>
-        <button onclick="getInputInfos()" class="next">Prosseguir pra criar perguntas</button>
+            <button type="submit" onclick="getInputInfos()" class="next">Prosseguir pra criar perguntas</button>
+        </form>
     </div>
     
     <div class="container-create-questions hidden">
@@ -49,7 +49,6 @@
     </div>
 
     <div class="container-finalization hidden">
-        
     </div>
 
     <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>

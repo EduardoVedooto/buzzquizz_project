@@ -7,7 +7,7 @@ function getQuizzes(){
 }
 
 function showQuizzes(response){
-    console.log(response.data)
+    // console.log(response.data)
     const eachQuizz = document.querySelector(".quizzes");
     
     eachQuizz.innerHTML = "";
@@ -36,7 +36,13 @@ function getInputInfos(){
     
     if(getTitle.value == "" || getUlrImage.value == "" || getQntNumber.value == "" || getLevelNumber.value == ""){
         alert("Todos os campos precisam ser preenchidos!");
-    } else {
+    }else if(getTitle.value.length < 20){
+        alert("O titulo deve ter pelo menos 20 caracteres!");
+    }else if(getQntNumber.value <= 2){
+        alert("Quantidade de perguntas deve ser pelo menos 3!")
+    } else if(getLevelNumber.value <=1){
+        alert("Quantidade de níveis deve ser pelo menos 2!")
+    }else {
         const createFeature = document.querySelector(".container-new-quiz");    
         const createQuestions = document.querySelector(".container-create-questions");
         createFeature.classList.add("hidden");
@@ -46,7 +52,7 @@ function getInputInfos(){
 }
 
 function createQuestion(getTitle, getUlrImage, getQntNumber, getLevelNumber){
-    console.log(getQntNumber)
+    // console.log(getQntNumber)
     let generateQuestions = document.querySelector(".container-create-questions");
     
     for(let i = 1; i <= getQntNumber; i++){
@@ -86,10 +92,10 @@ function createQuestion(getTitle, getUlrImage, getQntNumber, getLevelNumber){
     hideCreateFeature.classList.add("hidden");
     displayCreateQuestion.classList.remove("hidden");
 
-    // console.log(getTitle.value);
-    // console.log(getUlrImage.value);
-    // console.log(getQntNumber.value);
-    // console.log(getLevelNumber.value);
+    // console.log(getTitle);
+    // console.log(getUlrImage);
+    // console.log(getQntNumber);
+    // console.log(getLevelNumber);
 }
 
 function createLevel(levelNumber, quizzTitle, URLImage) {
