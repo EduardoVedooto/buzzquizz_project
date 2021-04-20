@@ -54,24 +54,24 @@ function createQuestion(getTitle, getUlrImage, getQntNumber, getLevelNumber){
             <input type="text" placeholder="Cor de fundo da pergunta" class="color">
             <h2>Resposta correta</h2>
             <input type="text" placeholder="Resposta correta" class="right-answer">
-            <input type="text" placeholder="URL da imagem" class="right-answer-img">
+            <input type="url" placeholder="URL da imagem" class="right-answer-img">
             <h2>Respostas incorretas</h2>
             <div class="wrong-answer">
                 <input type="text" placeholder="Resposta incorreta 1">
-                <input type="text" placeholder="URL da imagem" class="image">
+                <input type="url" placeholder="URL da imagem" class="image">
             </div>
             <div class="wrong-answer2">
                 <input type="text" placeholder="Resposta incorreta 2">
-                <input type="text" placeholder="URL da imagem" class="image">
+                <input type="url" placeholder="URL da imagem" class="image">
             </div>
             <div class="wrong-answer3">
                 <input type="text" placeholder="Resposta incorreta 3">
-                <input type="text" placeholder="URL da imagem" class="image">
+                <input type="url" placeholder="URL da imagem" class="image">
             </div>
         </div>
-        `
+        `;
     }
-    generateQuestions.innerHTML += `<button class="next">Prosseguir pra criar níveis</button>`
+    generateQuestions.innerHTML += `<button class="next" onclick="createLevel(${getLevelNumber})">Prosseguir pra criar níveis</button>`
 
     const displayCreateQuestion = document.querySelector(".container-create-questions");
     const hideCreateFeature = document.querySelector(".container-new-quiz");
@@ -82,4 +82,25 @@ function createQuestion(getTitle, getUlrImage, getQntNumber, getLevelNumber){
     // console.log(getUlrImage.value);
     // console.log(getQntNumber.value);
     // console.log(getLevelNumber.value);
+}
+
+function createLevel(levelNumber) {
+    let generateLevels = document.querySelector(".container-levels");
+    for (let i = 1; i <= levelNumber; i++) {
+        generateLevels.innerHTML += `
+        <div class="level">
+            <h2>Nível ${i}</h2>
+            <input type="text" placeholder="Título do nível">
+            <input type="number" placeholder="% de acerto mínima">
+            <input type="url" placeholder="URL da imagem do nível">
+            <input type="text" placeholder="Descrição do nível">
+        </div>
+        `;
+    }
+    generateLevels.innerHTML += `<button>Finalizar Quizz</button>`;
+
+    const displayCreateLevel = document.querySelector(".container-levels");
+    const hideCreateQuestions = document.querySelector(".container-create-questions");
+    displayCreateLevel.classList.remove("hidden");
+    hideCreateQuestions.classList.add("hidden");
 }
