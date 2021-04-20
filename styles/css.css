@@ -96,3 +96,60 @@ body{
 .container .quizzes .e-quizzes:last-child {
     margin-right: 0;
 }
+
+.container-new-quiz {
+    width: 100vw;
+    height: calc(100vh - 69px);
+    /*position: fixed;*/
+    top: 69px;
+    left: 0;
+    background-color: #D5D5D5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container-new-quiz h2 {
+    font-weight: 700;
+    font-size: 23px;
+    margin: 70px 0 30px 0;
+}
+
+.container-new-quiz .inputs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #FFF;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0, 0.05);
+}
+
+.container-new-quiz .inputs input {
+    width: 700px;
+    height: 46px;
+    margin-bottom: 10px;
+    border: 1px solid #D1D1D1;
+    border-radius: 5px;
+    padding-left: 20px;
+    font-size: 19px;
+    outline: none;
+}
+
+.container-new-quiz .inputs input::placeholder {
+    font-style: italic;
+}
+
+.container-new-quiz .inputs input:last-child {
+    margin-bottom: 0 ;
+}
+
+.container-new-quiz button {
+    font-size: 21px;
+    color: #FFF;
+    padding: 5px 40px;
+    border-radius: 5px;
+    border: none;
+    background: #EC362D;
+    margin-top: 60px;
+    cursor: pointer;
+}
