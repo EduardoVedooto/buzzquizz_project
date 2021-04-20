@@ -265,7 +265,7 @@ body{
 .container-levels {
     background-color: #FAFAFA;
     width: 100vw;
-    height: calc(100% - 69px);
+    height: auto;
     margin-top: 69px;
     margin-bottom: 30px;
     display: flex;

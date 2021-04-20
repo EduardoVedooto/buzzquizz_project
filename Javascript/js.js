@@ -1,5 +1,4 @@
 
-
 getQuizzes(); 
 
 function getQuizzes(){
@@ -10,18 +9,18 @@ function getQuizzes(){
 function showQuizzes(response){
     console.log(response.data)
     const eachQuizz = document.querySelector(".quizzes");
-
+    
     eachQuizz.innerHTML = "";
     for(let i = 0; i < response.data.length; i++){
         eachQuizz.innerHTML +=`
         <div class="e-quizzes" onclick="acessQuizz(this)">
-            <img src="${response.data[i].image}">
-            <p>${response.data[i].title}</p>
+        <img src="${response.data[i].image}">
+        <p>${response.data[i].title}</p>
         </div>  
         `
     }
 }
- 
+
 function createQuizz(){
     const containerQuizz = document.querySelector(".container");
     const createFeature = document.querySelector(".container-new-quiz");
@@ -34,12 +33,16 @@ function getInputInfos(){
     const getUlrImage = document.querySelector(".inputs .ulr-img");
     const getQntNumber = document.querySelector(".inputs .questions-number");
     const getLevelNumber = document.querySelector(".inputs .level-number");
-
-    const createFeature = document.querySelector(".container-new-quiz");
-    const createQuestions = document.querySelector(".container-create-questions");
-    createFeature.classList.add("hidden");
-    createQuestions.classList.remove("hidden");
-    createQuestion(getTitle.value, getUlrImage.value, getQntNumber.value, getLevelNumber.value);
+    
+    if(getTitle.value == "" || getUlrImage.value == "" || getQntNumber.value == "" || getLevelNumber.value == ""){
+        alert("Todos os campos precisam ser preenchidos!");
+    } else {
+        const createFeature = document.querySelector(".container-new-quiz");    
+        const createQuestions = document.querySelector(".container-create-questions");
+        createFeature.classList.add("hidden");
+        createQuestions.classList.remove("hidden");
+        createQuestion(getTitle.value, getUlrImage.value, getQntNumber.value, getLevelNumber.value);
+    }
 }
 
 function createQuestion(getTitle, getUlrImage, getQntNumber, getLevelNumber){
