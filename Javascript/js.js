@@ -42,7 +42,7 @@ function getInputInfos(){
         alert("Quantidade de perguntas deve ser pelo menos 3!")
     } else if(getLevelNumber.value <=1){
         alert("Quantidade de níveis deve ser pelo menos 2!")
-    }else if(validURL(getUlrImage.value)){
+    }else if((validURL(getUlrImage.value)) == false){
         alert("Não é um URL");
     }else {
         const createFeature = document.querySelector(".container-new-quiz");    
@@ -52,6 +52,16 @@ function getInputInfos(){
         createQuestion(getTitle.value, getUlrImage.value, getQntNumber.value, getLevelNumber.value);
     }
 }
+
+function validURL(str) {
+    var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+      '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+      '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+    return !!pattern.test(str);
+  }
 
 function createQuestion(getTitle, getUlrImage, getQntNumber, getLevelNumber){
     // console.log(getQntNumber)
