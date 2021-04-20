@@ -1,6 +1,6 @@
 
 
-getQuizzes();
+getQuizzes(); 
 
 function getQuizzes(){
     const promess = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes");
