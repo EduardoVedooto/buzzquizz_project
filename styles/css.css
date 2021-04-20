@@ -108,13 +108,12 @@ body{
     margin-right: 0;
 }
 
+    /* New Quizz */
 .container-new-quiz {
     width: 100vw;
     height: calc(100vh - 69px);
-    /*position: fixed;*/
-    top: 69px;
-    left: 0;
-    background-color: #D5D5D5;
+    margin-top: 69px;
+    background-color: #FAFAFA;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -148,6 +147,26 @@ body{
 
 .container-new-quiz .inputs input::placeholder {
     font-style: italic;
+    color: #BABABA;
+    font-weight: 400;
+}
+
+.container-new-quiz .inputs input::-webkit-input-placeholder{
+    font-style: italic;
+    color: #BABABA;
+    font-weight: 400;
+}
+
+.container-new-quiz .inputs input:-moz-placeholder{
+    font-style: italic;
+    color: #BABABA;
+    font-weight: 400;
+}
+
+.container-new-quiz .inputs input::-moz-placeholder{
+    font-style: italic;
+    color: #BABABA;
+    font-weight: 400;
 }
 
 .container-new-quiz .inputs input:last-child {
@@ -156,9 +175,11 @@ body{
 
 .container-new-quiz button {
     font-size: 21px;
-    color: #FFF;
-    padding: 5px 40px;
-    border-radius: 5px;
+    color: #FFF5F4;
+    font-weight: 400;
+    width: 324px;
+    height: 54px;
+    border-radius: 15px;
     border: none;
     background: #EC362D;
     margin-top: 60px;
@@ -197,5 +218,16 @@ body{
     .container h2{
         margin: 30px 0 10px 0;
     }
-
+    .container-new-quiz .inputs{
+        width: 100%;
+    }
+    .container-new-quiz{
+        margin-top: 30px
+    }
+    .container-new-quiz .inputs input{
+        width: 100%;
+    }
+    .container-new-quiz button{
+        margin-top: 30px;
+    }
 }

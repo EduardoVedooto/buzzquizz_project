@@ -20,32 +20,13 @@
             <div class="user-quizz">
                 <p>Você não criou nenhum <br> quizz ainda :(</p>
             </div>
-            <button onclick="createQuizz(this)">
+            <button onclick="createQuizz()">
                 Criar Quizz
             </button>
          </div>
          <h2>Todos os Quizzes</h2>
          <div class="quizzes">
-             <div class="e-quizzes">
-                <img src="/images/Simpsons.png">
-                <p>Acerte os personagens corretos dos Simpsons e prove seu amor!</p>
-             </div>
-             <div class="e-quizzes">
-                <img src="/images/Simpsons.png">
-                <p>Acerte os personagens corretos dos Simpsons e prove seu amor!</p>
-            </div>
-            <div class="e-quizzes">
-                <img src="/images/Simpsons.png">
-                <p>Acerte os personagens corretos dos Simpsons e prove seu amor!</p>
-            </div>
-            <div class="e-quizzes">
-                <img src="/images/Simpsons.png">
-                <p>Acerte os personagens corretos dos Simpsons e prove seu amor!</p>
-            </div>
-            <div class="e-quizzes">
-                <img src="/images/Simpsons.png">
-                <p>Acerte os personagens corretos dos Simpsons e prove seu amor!</p>
-            </div>
+
          </div>
     </div>
     <div class="container-new-quiz hidden">
@@ -56,10 +37,10 @@
             <input type="text" placeholder="Quantidade de perguntas do quizz" class="questions-number">
             <input type="text" placeholder="Quantidade de níveis do quizz" class="level-number">
         </div>
-        <button class="next">Prosseguir pra criar perguntas</button>
+        <button onclick="getInputInfos()" class="next">Prosseguir pra criar perguntas</button>
     </div>
 
-
+    <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="Javascript/js.js"></script>
 </body>

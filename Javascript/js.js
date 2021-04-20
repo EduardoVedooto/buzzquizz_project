@@ -22,14 +22,21 @@ function showQuizzes(response){
     }
 }
  
-function createQuizz(clicked){
+function createQuizz(){
     const containerQuizz = document.querySelector(".container");
     const createFeature = document.querySelector(".container-new-quiz");
     containerQuizz.classList.add("hidden");
     createFeature.classList.remove("hidden");
-    
 }
 
-// function acessQuizz(clicked){
-    
-// }
+function getInputInfos(){
+    const getTitle = document.querySelector(".inputs .title");
+    const getUlrImage = document.querySelector(".inputs .ulr-img");
+    const getQntNumber = document.querySelector(".inputs .questions-number");
+    const getLevelNumber = document.querySelector(".inputs .level-number");
+
+    // console.log(getTitle.value);
+    // console.log(getUlrImage.value);
+    // console.log(getQntNumber.value);
+    // console.log(getLevelNumber.value);
+}
