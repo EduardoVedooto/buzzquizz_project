@@ -14,7 +14,7 @@ body{
     align-items: center;
     width: 100%;
     height: 69px;
-    background-color: red;
+    background-color: #EC362D;
     font-weight: 700;
     color: #fff;
     font-weight: 700;
@@ -61,6 +61,11 @@ body{
     background-color: #fff;
     color: #ec362d;
     outline: none;
+    cursor: pointer;
+}
+
+.create-quizz button:hover{
+    border: 1px solid #EC362D;
 }
 
 .container h2{
@@ -78,14 +83,13 @@ body{
 .container .quizzes .e-quizzes {
     width: calc(33% - 10px);
     height: 180px;
-    background-color: #ec362d;
     border-radius: 5px;
     margin-bottom: 15px;
     display: flex;
     align-items: flex-end;
     justify-content: center;
     position: relative;
-    background: linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 65%, #000 100%); 
+    background: linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 65%, #000 100%);
     cursor: pointer;
 }
 
@@ -218,6 +222,10 @@ body{
     margin-bottom: 30px;
 }
 
+.container-create-questions .question:last-of-type{
+    margin-bottom: 0;
+}
+
 .container-create-questions .question h2{
     font-size: 20px;
     font-weight: 700;
@@ -257,8 +265,9 @@ body{
 .container-levels {
     background-color: #FAFAFA;
     width: 100vw;
-    height: calc(100vh - 69px);
+    height: calc(100% - 69px);
     margin-top: 69px;
+    margin-bottom: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -278,6 +287,10 @@ body{
     width: 560px;
     box-shadow: 0 0 10px rgba(0,0,0,0.05);
     margin-bottom: 30px;
+}
+
+.container-levels .level:last-of-type {
+    margin-bottom: 0;
 }
 
 .container-levels h2 {
@@ -304,9 +317,88 @@ body{
     color: #BABABA ;
 }
 
+/* Finalization Screen */
+
+.container-finalization {
+    background-color: #FAFAFA;
+    width: 100vw;
+    height: calc(100vh - 69px);
+    margin-top: 69px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container-finalization h1 {
+    font-weight: 700;
+    font-size: 23px;
+    margin: 71px 0 46px 0;
+}
+
+.container-finalization .quizz-card {
+    width: 500px;
+    height: 266px;
+    border-radius: 5px;
+    margin-bottom: 45px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: left;
+    position: relative;
+    z-index: 1;
+    cursor: pointer;
+}
 
 
+.container-finalization .quizz-card .gradient {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 65.62%, rgba(0, 0, 0, 0.8) 100%);
+    border-radius: 5px;
+}
 
+.container-finalization .quizz-card img{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    
+    border-radius: 5px; 
+    object-fit: cover;
+    z-index: -1;
+}
+
+.container-finalization .quizz-card p {
+    position: absolute;
+    left: 20px;
+    bottom: 25px;
+    color: #FFF;
+    font-size: 23px;
+}
+
+.container-finalization button {
+    width: 220px;
+    height: 44px;
+    border-radius: 15px;
+    border: none;
+    background: none;
+    font-size: 21px;
+    color: #818181;
+    cursor: pointer;
+}
+
+.container-finalization button:hover {
+    text-decoration: underline;
+}
+
+.container-finalization button:first-of-type {
+    background-color: #EC362D;
+    color: #FFF;
+    margin-bottom: 9px;
+}
+
+.container-finalization button:first-of-type:hover {
+    filter: brightness(120%);
+    text-decoration: none;
+}
 
 
     /* Hidden Feature */
