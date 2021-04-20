@@ -36,14 +36,14 @@ function getInputInfos(){
     
     if(getTitle.value == "" || getUlrImage.value == "" || getQntNumber.value == "" || getLevelNumber.value == ""){
         alert("Todos os campos precisam ser preenchidos!");
-    }else if(getTitle.value.length < 20){
-        alert("O titulo deve ter pelo menos 20 caracteres!");
-    }else if(getQntNumber.value <= 2){
-        alert("Quantidade de perguntas deve ser pelo menos 3!")
-    } else if(getLevelNumber.value <=1){
-        alert("Quantidade de níveis deve ser pelo menos 2!")
-    }else if((validURL(getUlrImage.value)) == false){
-        alert("Não é um URL");
+    // }else if(getTitle.value.length < 20){
+    //     alert("O titulo deve ter pelo menos 20 caracteres!");
+    // }else if(getQntNumber.value <= 2){
+    //     alert("Quantidade de perguntas deve ser pelo menos 3!")
+    // } else if(getLevelNumber.value <=1){
+    //     alert("Quantidade de níveis deve ser pelo menos 2!")
+    // }else if((validURL(getUlrImage.value)) == false){
+    //     alert("Não é um URL");
     }else {
         const createFeature = document.querySelector(".container-new-quiz");    
         const createQuestions = document.querySelector(".container-create-questions");
@@ -54,14 +54,14 @@ function getInputInfos(){
 }
 
 function validURL(str) {
-    var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+    let pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
       '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
       '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
       '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
       '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
       '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
     return !!pattern.test(str);
-  }
+}
 
 function createQuestion(getTitle, getUlrImage, getQntNumber, getLevelNumber){
     // console.log(getQntNumber)
@@ -70,7 +70,10 @@ function createQuestion(getTitle, getUlrImage, getQntNumber, getLevelNumber){
     for(let i = 1; i <= getQntNumber; i++){
         generateQuestions.innerHTML +=`
         <div class="question">
-            <h2>Pergunta ${[i]}</h2>
+            <div class="create-question-title">
+                <h2>Pergunta ${[i]}</h2>
+                <ion-icon onclick="toggleEdit(this)" name="create-outline"></ion-icon>
+            </div>
             <input type="text" placeholder="Texto da pergunta" class="question-text">
             <input type="text" placeholder="Cor de fundo da pergunta" class="color">
             <h2>Resposta correta</h2>
@@ -108,6 +111,16 @@ function createQuestion(getTitle, getUlrImage, getQntNumber, getLevelNumber){
     // console.log(getUlrImage);
     // console.log(getQntNumber);
     // console.log(getLevelNumber);
+}
+
+function toggleEdit(click){
+    const clickOnQuestion = document.querySelector(".container-create-questions .question");
+    const checkOpacity = clickOnQuestion.querySelector(".changeopacity");
+    console.log(checkOpacity);
+    if(checkOpacity !==null){
+        checkOpacity.classList.remove("changeopacity");
+    }
+    click.classList.add("changeopacity");
 }
 
 function createLevel(levelNumber, quizzTitle, URLImage) {

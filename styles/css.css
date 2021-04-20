@@ -232,7 +232,16 @@ body{
     font-weight: 700;
     margin: 20px 0;
 }
-
+.container-create-questions .question .create-question-title{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.container-create-questions .question .create-question-title ion-icon{
+    font-size: 23px;
+    color: #000;
+    opacity: 1;
+}
 .container-create-questions .question h2:first-child {
     margin-top: 0;
 }
@@ -409,6 +418,10 @@ body{
     /* Hidden Feature */
 .hidden{
     display: none;
+}
+    /* Opacity Feature */
+.container-create-questions .question .create-question-title .changeopacity{
+    opacity: 0;
 }
 
 
