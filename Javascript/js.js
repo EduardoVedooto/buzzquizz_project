@@ -74,8 +74,13 @@ function createQuestion(getTitle, getUlrImage, getQntNumber, getLevelNumber){
         </div>
         `;
     }
-    generateQuestions.innerHTML += `<button class="next" onclick="createLevel(${getLevelNumber})">Prosseguir pra criar níveis</button>`
-
+    console.log(getTitle);
+    console.log(getUlrImage);
+    
+    generateQuestions.innerHTML += `
+        <button class="next" onclick="createLevel(${parseInt(getLevelNumber)}, '${getTitle}', '${getUlrImage}')">Prosseguir pra criar níveis</button>
+    `;
+    
     const displayCreateQuestion = document.querySelector(".container-create-questions");
     const hideCreateFeature = document.querySelector(".container-new-quiz");
     hideCreateFeature.classList.add("hidden");
@@ -87,7 +92,7 @@ function createQuestion(getTitle, getUlrImage, getQntNumber, getLevelNumber){
     // console.log(getLevelNumber.value);
 }
 
-function createLevel(levelNumber) {
+function createLevel(levelNumber, quizzTitle, URLImage) {
     let generateLevels = document.querySelector(".container-levels");
     for (let i = 1; i <= levelNumber; i++) {
         generateLevels.innerHTML += `
@@ -100,10 +105,41 @@ function createLevel(levelNumber) {
         </div>
         `;
     }
-    generateLevels.innerHTML += `<button>Finalizar Quizz</button>`;
+    generateLevels.innerHTML += `<button onclick="createFinalization('${quizzTitle}', '${URLImage}')">Finalizar Quizz</button>`;
+
+    console.log(quizzTitle)
+    console.log(typeof(quizzTitle))
+
+    console.log(URLImage)
+    console.log(typeof(URLImage))
 
     const displayCreateLevel = document.querySelector(".container-levels");
     const hideCreateQuestions = document.querySelector(".container-create-questions");
     displayCreateLevel.classList.remove("hidden");
     hideCreateQuestions.classList.add("hidden");
+}
+
+function createFinalization(Title, URLImage){
+    const screen = document.querySelector(".container-finalization");
+    screen.innerHTML = `
+        <h1>Seu quizz está pronto!</h1>
+        <div class="quizz-card">
+            <img src="${URLImage}">
+            <div class="gradient"></div>
+            <p>${Title}</p>
+        </div>
+        <button>Acessar Quizz</button>
+        <button onclick="backHomescreen()">Voltar pra Home</button>
+    `;
+    screen.classList.remove("hidden");
+    const hideLevelScreen = document.querySelector(".container-levels");
+    hideLevelScreen.classList.add("hidden");
+}
+
+function backHomescreen() {
+    getQuizzes();
+    const homescreen = document.querySelector(".container");
+    const finalizationScreen = document.querySelector(".container-finalization");
+    finalizationScreen.classList.add("hidden");
+    homescreen.classList.remove("hidden");
 }
