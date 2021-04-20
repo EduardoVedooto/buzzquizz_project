@@ -85,7 +85,7 @@ body{
     align-items: flex-end;
     justify-content: center;
     position: relative;
-    background: linear-gradient(rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.2)); 
+    background: linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 65%, #000 100%); 
     
 }
 
@@ -102,6 +102,7 @@ body{
     overflow: hidden;
     border-radius: 5px; 
     z-index: -1;
+    object-fit: cover;
 }
 
 .container .quizzes .e-quizzes:last-child {
@@ -275,7 +276,7 @@ body{
 
 /* Mobile */
 
-@media (max-width: 375px){
+@media (max-width: 1100px){
     .container{
         width: 90vw;
     }
@@ -296,5 +297,8 @@ body{
     }
     .container-new-quiz button{
         margin-top: 30px;
+    }
+    .container-create-questions .question{
+        width: 100%;
     }
 }

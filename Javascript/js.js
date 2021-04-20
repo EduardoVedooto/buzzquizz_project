@@ -49,7 +49,7 @@ function createQuestion(getTitle, getUlrImage, getQntNumber, getLevelNumber){
     for(let i = 1; i <= getQntNumber; i++){
         generateQuestions.innerHTML +=`
         <div class="question">
-            <h2>Pergunta ${[i]} </h2>
+            <h2>Pergunta ${[i]}</h2>
             <input type="text" placeholder="Texto da pergunta" class="question-text">
             <input type="text" placeholder="Cor de fundo da pergunta" class="color">
             <h2>Resposta correta</h2>
@@ -72,4 +72,14 @@ function createQuestion(getTitle, getUlrImage, getQntNumber, getLevelNumber){
         `
     }
     generateQuestions.innerHTML += `<button class="next">Prosseguir pra criar níveis</button>`
+
+    const displayCreateQuestion = document.querySelector(".container-create-questions");
+    const hideCreateFeature = document.querySelector(".container-new-quiz");
+    hideCreateFeature.classList.add("hidden");
+    displayCreateQuestion.classList.remove("hidden");
+
+    // console.log(getTitle.value);
+    // console.log(getUlrImage.value);
+    // console.log(getQntNumber.value);
+    // console.log(getLevelNumber.value);
 }
