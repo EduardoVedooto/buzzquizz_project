@@ -131,6 +131,7 @@ body{
 }
 
 .container-new-quiz .inputs {
+    width: 560px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -140,7 +141,7 @@ body{
 }
 
 .container-new-quiz .inputs input {
-    width: 700px;
+    width: 100%;
     height: 46px;
     margin-bottom: 10px;
     border: 1px solid #D1D1D1;
@@ -214,7 +215,7 @@ body{
 
 .container-create-questions .question {
     background-color: #FFF;
-    width: 700px;
+    width: 560px;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -267,7 +268,6 @@ body{
     width: 100vw;
     height: auto;
     margin-top: 69px;
-    margin-bottom: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -315,6 +315,10 @@ body{
 .container-levels input::placeholder {
     font-style: italic;
     color: #BABABA ;
+}
+
+.container-levels button {
+    margin-bottom: 30px;
 }
 
 /* Finalization Screen */
