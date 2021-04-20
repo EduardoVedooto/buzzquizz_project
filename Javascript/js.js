@@ -35,8 +35,41 @@ function getInputInfos(){
     const getQntNumber = document.querySelector(".inputs .questions-number");
     const getLevelNumber = document.querySelector(".inputs .level-number");
 
-    // console.log(getTitle.value);
-    // console.log(getUlrImage.value);
-    // console.log(getQntNumber.value);
-    // console.log(getLevelNumber.value);
+    const createFeature = document.querySelector(".container-new-quiz");
+    const createQuestions = document.querySelector(".container-create-questions");
+    createFeature.classList.add("hidden");
+    createQuestions.classList.remove("hidden");
+    createQuestion(getTitle.value, getUlrImage.value, getQntNumber.value, getLevelNumber.value);
+}
+
+function createQuestion(getTitle, getUlrImage, getQntNumber, getLevelNumber){
+    console.log(getQntNumber)
+    let generateQuestions = document.querySelector(".container-create-questions");
+    
+    for(let i = 1; i <= getQntNumber; i++){
+        generateQuestions.innerHTML +=`
+        <div class="question">
+            <h2>Pergunta ${[i]} </h2>
+            <input type="text" placeholder="Texto da pergunta" class="question-text">
+            <input type="text" placeholder="Cor de fundo da pergunta" class="color">
+            <h2>Resposta correta</h2>
+            <input type="text" placeholder="Resposta correta" class="right-answer">
+            <input type="text" placeholder="URL da imagem" class="right-answer-img">
+            <h2>Respostas incorretas</h2>
+            <div class="wrong-answer">
+                <input type="text" placeholder="Resposta incorreta 1">
+                <input type="text" placeholder="URL da imagem" class="image">
+            </div>
+            <div class="wrong-answer2">
+                <input type="text" placeholder="Resposta incorreta 2">
+                <input type="text" placeholder="URL da imagem" class="image">
+            </div>
+            <div class="wrong-answer3">
+                <input type="text" placeholder="Resposta incorreta 3">
+                <input type="text" placeholder="URL da imagem" class="image">
+            </div>
+        </div>
+        `
+    }
+    generateQuestions.innerHTML += `<button class="next">Prosseguir pra criar níveis</button>`
 }

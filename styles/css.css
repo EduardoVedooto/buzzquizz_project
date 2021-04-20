@@ -232,6 +232,10 @@ body{
     padding-left: 20px;
 }
 
+.container-create-questions .question{
+    margin-bottom: 30px;
+}
+
 .container-create-questions .question div {
     display: flex;
     flex-direction: column;
