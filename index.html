@@ -31,13 +31,13 @@
     </div>
     <div class="container-new-quiz hidden">
         <h2>Comece pelo começo</h2>
-        <form class="inputs">
+        <div class="inputs">
             <input type="text" placeholder="Título do seu quizz" class="title" maxlength="65">
-            <input type="url" placeholder="URL da imagem do seu quizz" class="ulr-img" required>
+            <input type="url" placeholder="URL da imagem do seu quizz" class="ulr-img">
             <input type="number" placeholder="Quantidade de perguntas do quizz" class="questions-number">
             <input type="number" placeholder="Quantidade de níveis do quizz" class="level-number">
-            <button type="submit" onclick="getInputInfos()" class="next">Prosseguir pra criar perguntas</button>
-        </form>
+        </div>
+        <button type="submit" onclick="getInputInfos()" class="next">Prosseguir pra criar perguntas</button>
     </div>
     
     <div class="container-create-questions hidden">

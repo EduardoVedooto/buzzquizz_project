@@ -42,6 +42,8 @@ function getInputInfos(){
         alert("Quantidade de perguntas deve ser pelo menos 3!")
     } else if(getLevelNumber.value <=1){
         alert("Quantidade de níveis deve ser pelo menos 2!")
+    }else if(validURL(getUlrImage.value)){
+        alert("Não é um URL");
     }else {
         const createFeature = document.querySelector(".container-new-quiz");    
         const createQuestions = document.querySelector(".container-create-questions");
