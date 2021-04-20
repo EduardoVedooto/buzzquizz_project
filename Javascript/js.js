@@ -24,11 +24,12 @@ function showQuizzes(response){
  
 function createQuizz(clicked){
     const containerQuizz = document.querySelector(".container");
-    // const createFeature = document.querySelector(".") missing feature;
+    const createFeature = document.querySelector(".container-new-quiz");
     containerQuizz.classList.add("hidden");
+    createFeature.classList.remove("hidden");
     
 }
 
-function acessQuizz(clicked){
-    alert("Feature não implementada")
-}
+// function acessQuizz(clicked){
+    
+// }
