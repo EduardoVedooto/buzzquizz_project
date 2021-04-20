@@ -33,7 +33,7 @@ body{
     justify-content: center;
     border: 1px dashed #D5D5D5;
 }
-.aaa{
+.user-quizz{
     display: flex;
     text-align: center;
     line-height: 20px;
