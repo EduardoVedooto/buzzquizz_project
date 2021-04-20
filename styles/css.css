@@ -383,6 +383,7 @@ body{
     font-size: 21px;
     color: #818181;
     cursor: pointer;
+    outline: none;
 }
 
 .container-finalization button:hover {
