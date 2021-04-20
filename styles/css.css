@@ -97,6 +97,7 @@ body{
     margin: 10px;
     font-size: 19px;
     color: #FFF;
+    word-break: break-all;
 }
 
 .container .quizzes .e-quizzes img {
@@ -198,7 +199,7 @@ body{
     /* Create questions screen */
 
 .container-create-questions {
-    width: 100vw;
+    width: 100%;
     height: auto;
     margin-top: 69px;
     background-color: #FAFAFA;
@@ -381,6 +382,8 @@ body{
 
 .container-finalization .quizz-card p {
     position: absolute;
+    width: 95%;
+    word-break: break-all;
     left: 20px;
     bottom: 25px;
     color: #FFF;
@@ -465,5 +468,21 @@ body{
     }
     .container-create-questions .question{
         width: 100%;
+    }
+    .container-levels {
+        width: 100%;
+    }
+    .container-levels .level {
+        width: 100%;
+    }
+    .container-finalization {
+        width: 100%;
+        align-items: center;
+    }
+    .container-finalization .quizz-card {
+        width: 90%;
+    }
+    .container-finalization .quizz-card p {
+        width: 90%;
     }
 }
