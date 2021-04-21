@@ -95,9 +95,6 @@ function createQuestion(getTitle, getUlrImage, getQntNumber, getLevelNumber){
         </div>
         `;
     }
-    console.log(getTitle);
-    console.log(getUlrImage);
-    
     generateQuestions.innerHTML += `
         <button class="next" onclick="createLevel(${parseInt(getLevelNumber)}, '${getTitle}', '${getUlrImage}')">Prosseguir pra criar níveis</button>
     `;
@@ -129,20 +126,14 @@ function createLevel(levelNumber, quizzTitle, URLImage) {
         generateLevels.innerHTML += `
         <div class="level">
             <h2>Nível ${i}</h2>
-            <input type="text" placeholder="Título do nível">
-            <input type="number" placeholder="% de acerto mínima">
-            <input type="url" placeholder="URL da imagem do nível">
-            <input type="text" placeholder="Descrição do nível">
+            <input type="text" class="title" placeholder="Título do nível">
+            <input type="number" class="percentage" placeholder="% de acerto mínima">
+            <input type="url" class="imageURL" placeholder="URL da imagem do nível">
+            <input type="text" class="description" placeholder="Descrição do nível">
         </div>
         `;
     }
-    generateLevels.innerHTML += `<button onclick="createFinalization('${quizzTitle}', '${URLImage}')">Finalizar Quizz</button>`;
-
-    console.log(quizzTitle)
-    console.log(typeof(quizzTitle))
-
-    console.log(URLImage)
-    console.log(typeof(URLImage))
+    generateLevels.innerHTML += `<button onclick="verifyLevelInput(${levelNumber},'${quizzTitle}', '${URLImage}')">Finalizar Quizz</button>`;
 
     const displayCreateLevel = document.querySelector(".container-levels");
     const hideCreateQuestions = document.querySelector(".container-create-questions");
@@ -173,4 +164,19 @@ function backHomescreen() {
     const finalizationScreen = document.querySelector(".container-finalization");
     finalizationScreen.classList.add("hidden");
     homescreen.classList.remove("hidden");
+}
+
+function verifyLevelInput(levelNumber, title, URLImage) {
+    const level = document.querySelectorAll(".container-levels .level");
+    //console.log(level[0].querySelectorAll("input")[0].value);
+    for (let i = 0; i < level.length; i++) {
+        const inputs = level[i].querySelectorAll("input");
+        console.log(inputs[0].value);
+        if(inputs[0].value.length < 10){
+            alert("O título deve possuir no mínimo 10 caracteres");
+            inputs[0].value = "";
+            break;
+        }
+    }
+
 }
