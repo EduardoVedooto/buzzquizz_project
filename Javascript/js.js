@@ -176,7 +176,6 @@ if(fail == true){
     createLevel(getLevelNumber, getTitle, getUlrImage);
 }
 
-
 function createLevel(levelNumber, quizzTitle, URLImage) {
     const displayCreateQuestion = document.querySelector(".container-create-questions");
     const hideCreateFeature = document.querySelector(".container-new-quiz");
@@ -229,6 +228,7 @@ function backHomescreen() {
 
 function verifyLevelInput(title, URLImage) {
     const level = document.querySelectorAll(".container-levels .level");
+    const arrayLevels = [];
     let existPercentageEqualsZero = false;
     let checked = false; // Variável que mudará para true no final do último loop dentro do for, para informar que tudo foi verificado
     for (let i = 0; i < level.length; i++) {
@@ -267,8 +267,15 @@ function verifyLevelInput(title, URLImage) {
             alert(`A descrição do nível precisa ter no mínimo 30 caracteres (Nível ${i+1})`);
             break;
         }
+        arrayLevels.push({
+            title: inputs[0].value,
+            image: inputs[2].value,
+            text: inputs[3].value,
+            minValue: Number(inputs[1].value)
+        });
         if(i === level.length-1) checked = true;
     }
+    console.log(arrayLevels);
     if(checked)
         if(!existPercentageEqualsZero)
             alert(`É obrigatório existir pelo menos um nível igual a zero.`);
