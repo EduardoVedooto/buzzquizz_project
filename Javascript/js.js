@@ -37,14 +37,14 @@ function getInputInfos(){
     
     if(getTitle.value == "" || getUlrImage.value == "" || getQntNumber.value == "" || getLevelNumber.value == ""){
         alert("Todos os campos precisam ser preenchidos!");
-    // }else if(getTitle.value.length < 20){
-    //     alert("O titulo deve ter pelo menos 20 caracteres!");
-    // }else if(getQntNumber.value <= 2){
-    //     alert("Quantidade de perguntas deve ser pelo menos 3!");
-    // } else if(getLevelNumber.value <=1){
-    //     alert("Quantidade de níveis deve ser pelo menos 2!");
-    // }else if((validURL(getUlrImage.value)) == false){
-    //     alert("Não é um URL");
+    }else if(getTitle.value.length < 20){
+        alert("O titulo deve ter pelo menos 20 caracteres!");
+    }else if(getQntNumber.value <= 2){
+        alert("Quantidade de perguntas deve ser pelo menos 3!");
+    } else if(getLevelNumber.value <=1){
+        alert("Quantidade de níveis deve ser pelo menos 2!");
+    }else if((validURL(getUlrImage.value)) == false){
+        alert("Não é um URL");
     }else {
         const createFeature = document.querySelector(".container-new-quiz");    
         const createQuestions = document.querySelector(".container-create-questions");
@@ -52,10 +52,6 @@ function getInputInfos(){
         createQuestions.classList.remove("hidden");
         createQuestion(getTitle.value, getUlrImage.value, getQntNumber.value, getLevelNumber.value);
     }
-    // console.log(getTitle.value);
-    // console.log(getUlrImage.value);
-    // console.log(getQntNumber.value);
-    // console.log(getLevelNumber.value);
 }
 
 function validURL(str) {
@@ -113,7 +109,6 @@ function createQuestion(getTitle, getUlrImage, getQntNumber, getLevelNumber){
 function validadeQuestionForms(getLevelNumber, getTitle, getUlrImage, getQntNumber){
     let sucessAnswer2 = false;
     let sucessAnswer3 = false;
-    let hexa = /[0-9A-Fa-f]{6}/g;
     let formsQuestions = [];
 
     let questionModel = {
@@ -136,14 +131,12 @@ function validadeQuestionForms(getLevelNumber, getTitle, getUlrImage, getQntNumb
     const questionWrongAnswer3 = document.querySelector(`.question${i+1} .text-wrong3${i+1}`).value;
     const questionWrongImage3 = document.querySelector(`.question${i+1} .image-wrong3${i+1}`).value;
     
-    if(questionTitle == ""){
-        alert(`O texto da pergunta ${i+1} não pode ser vazio ou precisa ter mais de 20 caracteres.`);
-        return
-    } else if(questionTitle.length < 20){
+    if(questionTitle == ""|| questionTitle.length < 20){
         alert(`O texto da pergunta ${i+1} não pode ser vazio ou precisa ter mais de 20 caracteres.`);
         return
     } 
-    if(hexa.test(questionColor)[i+1] == false){
+    let hexa = /[0-9A-Fa-f]{6}/g;
+    if(hexa.test(questionColor) == false){
         alert(`A cor da pergunta ${i+1} precisa conter 6 digitos entre eles números de 0 à 9 e letras de A à F.`);
         return
     }
@@ -218,7 +211,9 @@ function validadeQuestionForms(getLevelNumber, getTitle, getUlrImage, getQntNumb
 
 }
     formsQuestions.push(questionModel);
-    console.log(formsQuestions);
+    
+    // const promess = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes", formsQuestions);
+    // promess.then();
 
     // createLevel(getLevelNumber, getTitle, getUlrImage);
 }
