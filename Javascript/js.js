@@ -1,5 +1,3 @@
-
-
 getQuizzes(); 
 
 function getQuizzes(){
@@ -7,17 +5,61 @@ function getQuizzes(){
     promess.then(showQuizzes);
 }
 
+let arrayClick;
+
 function showQuizzes(response){
-    console.log(response.data)
+    arrayClick = response;
     const eachQuizz = document.querySelector(".quizzes");
     
     eachQuizz.innerHTML = "";
     for(let i = 0; i < response.data.length; i++){
         eachQuizz.innerHTML +=`
-        <div class="e-quizzes" onclick="acessQuizz(this)">
+        <div class="e-quizzes" id=${i+1} onclick="acessQuizz(this.id)">
         <img src="${response.data[i].image}">
         <p>${response.data[i].title}</p>
         </div>  
+        `
+    }
+}
+
+function acessQuizz(click){
+    console.log(arrayClick.data);
+    console.log(click);
+    const aa = arrayClick.data[click-1]
+    console.log(aa)
+    console.log(aa.questions);
+
+    const questionBody = document.querySelector(".container-quizz");
+    questionBody.innerHTML = "";
+    questionBody.innerHTML = `
+        <div class="header">
+            <img src="${aa.image}">
+            <h2>${aa.title}</h2>
+        </div>
+    `
+    for(let i=0; i<aa.questions.length ; i++){
+        questionBody.innerHTML +=`
+        <div class="each-question">
+            <div style="background-color:${aa.questions[i].color};" class="title">${aa.questions[i].title}</div>
+            <div class="alternatives">
+                <div class="alternative">
+                    <img src="https://criticalhits.com.br/wp-content/uploads/2020/10/estas-afirmacoes-hermione-granger-harry-potter-sao-verdadeiras.jpg">
+                    <p>texto da alternativa</p>   
+                </div>
+                <div class="alternative">
+                    <img src="https://criticalhits.com.br/wp-content/uploads/2020/10/estas-afirmacoes-hermione-granger-harry-potter-sao-verdadeiras.jpg">
+                    <p>texto da alternativa</p>
+                </div>
+                <div class="alternative">
+                    <img src="https://criticalhits.com.br/wp-content/uploads/2020/10/estas-afirmacoes-hermione-granger-harry-potter-sao-verdadeiras.jpg">
+                    <p>texto da alternativa</p>   
+                </div>
+                <div class="alternative">
+                    <img src="https://criticalhits.com.br/wp-content/uploads/2020/10/estas-afirmacoes-hermione-granger-harry-potter-sao-verdadeiras.jpg">
+                    <p>texto da alternativa</p>   
+                </div>
+            </div>
+        </div>
         `
     }
 }
@@ -50,7 +92,9 @@ function getInputInfos(){
         const createQuestions = document.querySelector(".container-create-questions");
         createFeature.classList.add("hidden");
         createQuestions.classList.remove("hidden");
-        createQuestion(getTitle.value, getUlrImage.value, getQntNumber.value, getLevelNumber.value);
+        questionModel.title = getTitle.value
+        questionModel.image = getUlrImage.value
+        createQuestion(getQntNumber.value, getLevelNumber.value);
     }
 }
 
@@ -64,7 +108,7 @@ function validURL(str) {
     return !!pattern.test(str);
 }
 
-function createQuestion(getTitle, getUlrImage, getQntNumber, getLevelNumber){
+function createQuestion(getQntNumber, getLevelNumber){
     let generateQuestions = document.querySelector(".container-create-questions");
     
     for(let i = 1; i <= getQntNumber; i++){
@@ -94,7 +138,7 @@ function createQuestion(getTitle, getUlrImage, getQntNumber, getLevelNumber){
     }
 
         generateQuestions.innerHTML += `
-        <button class="next" onclick="validadeQuestionForms(${parseInt(getLevelNumber)}, '${getTitle}', '${getUlrImage}', '${getQntNumber}')">Prosseguir pra criar níveis</button>
+        <button class="next" onclick="validadeQuestionForms(${parseInt(getLevelNumber)}, '${getQntNumber}')">Prosseguir pra criar níveis</button>
         `;
 
     const displayCreateQuestion = document.querySelector(".container-create-questions");
@@ -104,21 +148,22 @@ function createQuestion(getTitle, getUlrImage, getQntNumber, getLevelNumber){
 
 }
 
+let questionModel = {
+    title: "",
+    image: "",
+    questions: [ 
+       
+    ],
+    levels: [
 
-
-function validadeQuestionForms(getLevelNumber, getTitle, getUlrImage, getQntNumber){
+    ]
+}
+function validadeQuestionForms(getLevelNumber, getQntNumber){
     let sucessAnswer2 = false;
     let sucessAnswer3 = false;
-    let formsQuestions = [];
+    
 
-    let questionModel = {
-        title: getTitle,
-        image: getUlrImage,
-        questions: [ 
-           
-        ]
 
-    }
     for(let i = 0; i < getQntNumber; i++){
     const questionTitle = document.querySelector(`.question${i+1} .question-text${i+1}`).value;
     const questionColor = document.querySelector(`.question${i+1} .color${i+1}`).value;
@@ -176,7 +221,7 @@ function validadeQuestionForms(getLevelNumber, getTitle, getUlrImage, getQntNumb
 
     questionModel.questions.push({
         title: questionTitle,
-        color: questionColor,
+        color: "#"+questionColor,
         answers: [
             {
                 text: questionRightAnswer,
@@ -210,17 +255,12 @@ function validadeQuestionForms(getLevelNumber, getTitle, getUlrImage, getQntNumb
 
 
 }
-    formsQuestions.push(questionModel);
-    
-    // const promess = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes", formsQuestions);
-    // promess.then();
 
-    // createLevel(getLevelNumber, getTitle, getUlrImage);
+    createLevel(getLevelNumber); 
 }
-    // createLevel(getLevelNumber, getTitle, getUlrImage);
 
 
-function createLevel(levelNumber, quizzTitle, URLImage) {
+function createLevel(levelNumber) {
     const displayCreateQuestion = document.querySelector(".container-create-questions");
     const hideCreateFeature = document.querySelector(".container-new-quiz");
     hideCreateFeature.classList.add("hidden");
@@ -237,7 +277,7 @@ function createLevel(levelNumber, quizzTitle, URLImage) {
         </div>
         `;
     }
-    generateLevels.innerHTML += `<button onclick="verifyLevelInput('${quizzTitle}', '${URLImage}')">Finalizar Quizz</button>`;
+    generateLevels.innerHTML += `<button onclick="verifyLevelInput()">Finalizar Quizz</button>`;
 
     const displayCreateLevel = document.querySelector(".container-levels");
     const hideCreateQuestions = document.querySelector(".container-create-questions");
@@ -245,14 +285,14 @@ function createLevel(levelNumber, quizzTitle, URLImage) {
     hideCreateQuestions.classList.add("hidden");
 }
 
-function createFinalization(Title, URLImage){
+function createFinalization(){
     const screen = document.querySelector(".container-finalization");
     screen.innerHTML = `
         <h1>Seu quizz está pronto!</h1>
         <div class="quizz-card">
-            <img src="${URLImage}">
+            <img src="${questionModel.image}">
             <div class="gradient"></div>
-            <p>${Title}</p>
+            <p>${questionModel.title}</p>
         </div>
         <button>Acessar Quizz</button>
         <button onclick="backHomescreen()">Voltar pra Home</button>
@@ -270,7 +310,7 @@ function backHomescreen() {
     homescreen.classList.remove("hidden");
 }
 
-function verifyLevelInput(title, URLImage) {
+function verifyLevelInput() {
     const level = document.querySelectorAll(".container-levels .level");
     const arrayLevels = [];
     let existPercentageEqualsZero = false;
@@ -323,6 +363,18 @@ function verifyLevelInput(title, URLImage) {
     if(checked)
         if(!existPercentageEqualsZero)
             alert(`É obrigatório existir pelo menos um nível igual a zero.`);
-        else
-            createFinalization(title, URLImage);
+        else{
+            questionModel.levels = arrayLevels;
+            sendQuizzToServer(questionModel);
+        }
+            
+}
+
+function sendQuizzToServer(request){
+    const promisse = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes", questionModel);
+    promisse.catch(failToPost);
+}
+function failToPost(){
+    console.log(questionModel);
+    alert("Vefique seu código!")
 }
