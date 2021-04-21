@@ -1,4 +1,5 @@
 
+
 getQuizzes(); 
 
 function getQuizzes(){
@@ -7,7 +8,7 @@ function getQuizzes(){
 }
 
 function showQuizzes(response){
-    // console.log(response.data)
+    console.log(response.data)
     const eachQuizz = document.querySelector(".quizzes");
     
     eachQuizz.innerHTML = "";
@@ -39,9 +40,9 @@ function getInputInfos(){
     // }else if(getTitle.value.length < 20){
     //     alert("O titulo deve ter pelo menos 20 caracteres!");
     // }else if(getQntNumber.value <= 2){
-    //     alert("Quantidade de perguntas deve ser pelo menos 3!")
+    //     alert("Quantidade de perguntas deve ser pelo menos 3!");
     // } else if(getLevelNumber.value <=1){
-    //     alert("Quantidade de níveis deve ser pelo menos 2!")
+    //     alert("Quantidade de níveis deve ser pelo menos 2!");
     // }else if((validURL(getUlrImage.value)) == false){
     //     alert("Não é um URL");
     }else {
@@ -51,6 +52,10 @@ function getInputInfos(){
         createQuestions.classList.remove("hidden");
         createQuestion(getTitle.value, getUlrImage.value, getQntNumber.value, getLevelNumber.value);
     }
+    // console.log(getTitle.value);
+    // console.log(getUlrImage.value);
+    // console.log(getQntNumber.value);
+    // console.log(getLevelNumber.value);
 }
 
 function validURL(str) {
@@ -64,66 +69,114 @@ function validURL(str) {
 }
 
 function createQuestion(getTitle, getUlrImage, getQntNumber, getLevelNumber){
-    // console.log(getQntNumber)
     let generateQuestions = document.querySelector(".container-create-questions");
     
     for(let i = 1; i <= getQntNumber; i++){
         generateQuestions.innerHTML +=`
-        <div class="question">
-            <div class="create-question-title">
-                <h2>Pergunta ${[i]}</h2>
-                <ion-icon onclick="toggleEdit(this)" name="create-outline"></ion-icon>
-            </div>
-            <input type="text" placeholder="Texto da pergunta" class="question-text">
-            <input type="text" placeholder="Cor de fundo da pergunta" class="color">
+        <div class="question${i} question">
+            <h2>Pergunta ${i}</h2>
+            <input type="text" placeholder="Texto da pergunta" class="question-text${i} minlength='20'">
+            <input type="text" placeholder="Cor de fundo da pergunta" class="color${i}">
             <h2>Resposta correta</h2>
-            <input type="text" placeholder="Resposta correta" class="right-answer">
-            <input type="url" placeholder="URL da imagem" class="right-answer-img">
+            <input type="text" placeholder="Resposta correta" class="right-answer${i}">
+            <input type="url" placeholder="URL da imagem" class="right-answer-img${i}">
             <h2>Respostas incorretas</h2>
             <div class="wrong-answer">
-                <input type="text" placeholder="Resposta incorreta 1">
-                <input type="url" placeholder="URL da imagem" class="image">
+                <input type="text" placeholder="Resposta incorreta 1" class="text-wrong${i}">
+                <input type="url" placeholder="URL da imagem" class="image-wrong${i}">
             </div>
             <div class="wrong-answer2">
-                <input type="text" placeholder="Resposta incorreta 2">
-                <input type="url" placeholder="URL da imagem" class="image">
+                <input type="text" placeholder="Resposta incorreta 2" class="text-wrong2${i}">
+                <input type="url" placeholder="URL da imagem" class="image-wrong2${i}">
             </div>
             <div class="wrong-answer3">
-                <input type="text" placeholder="Resposta incorreta 3">
-                <input type="url" placeholder="URL da imagem" class="image">
+                <input type="text" placeholder="Resposta incorreta 3" class="text-wrong3${i}">
+                <input type="url" placeholder="URL da imagem" class="image-wrong3${i}">
             </div>
         </div>
         `;
     }
-    console.log(getTitle);
-    console.log(getUlrImage);
-    
-    generateQuestions.innerHTML += `
-        <button class="next" onclick="createLevel(${parseInt(getLevelNumber)}, '${getTitle}', '${getUlrImage}')">Prosseguir pra criar níveis</button>
-    `;
-    
+        generateQuestions.innerHTML += `
+        <button class="next" onclick="validadeQuestionForms(${parseInt(getLevelNumber)}, '${getTitle}', '${getUlrImage}', '${getQntNumber}')">Prosseguir pra criar níveis</button>
+        `;
+
+}
+
+function validadeQuestionForms(getTitle, getUlrImage, getQntNumber, getLevelNumber){
+
+    let fail = false;
+    let formsQuestions = [];
+    for(let i = 1; i<=getQntNumber; i++){
+    const questionTitle = document.querySelector(`.question${i} .question-text${i}`).value;
+    const questionColor = document.querySelector(`.question${i} .color${i}`).value;
+    const questionRightAnswer = document.querySelector(`.question${i} .right-answer${i}`).value;
+    const questionRightImage = document.querySelector(`.question${i} .right-answer-img${i}`).value;
+    const questionWrongAnswer = document.querySelector(`.question${i} .text-wrong${i}`).value;
+    const questionWrongImage = document.querySelector(`.question${i} .image-wrong${i}`).value;
+    const questionWrongAnswer2 = document.querySelector(`.question${i} .text-wrong2${i}`).value;
+    const questionWrongImage2 = document.querySelector(`.question${i} .image-wrong2${i}`).value;
+    const questionWrongAnswer3 = document.querySelector(`.question${i} .text-wrong3${i}`).value;
+    const questionWrongImage3 = document.querySelector(`.question${i} .image-wrong3${i}`).value;
+
+    if(questionTitle == "" && questionTitle.value < 20){
+        fail = true;
+        break
+    }
+
+
+    let questionModel = {
+        title: getTitle,
+        image: getUlrImage,
+        questions: [
+            {
+                title: questionTitle,
+                color: questionColor,
+                answers: [
+                    {
+                        text: questionRightAnswer,
+                        image: questionRightImage,
+                        isCorrectAnswer: true
+                    },
+                    {
+                        text: questionWrongAnswer,
+                        image: questionWrongImage,
+                        isCorrectAnswer: false
+                    }
+
+                ]
+            }
+        ] 
+    }
+
+    questionModel.questions[0].answers.push({
+        text: questionWrongAnswer2,
+        image: questionWrongImage2,
+        isCorrectAnswer: false
+    })
+
+    questionModel.questions[0].answers.push({
+        text: questionWrongAnswer3,
+        image: questionWrongImage3,
+        isCorrectAnswer: false
+    })
+
+    formsQuestions.push(questionModel);
+}
+
+
+if(fail == true){
+    alert("Algum campo possui informações não aceitas, por favor verifique-as.");
+    return
+}
+    createLevel(getLevelNumber, getTitle, getUlrImage);
+}
+
+
+function createLevel(levelNumber, quizzTitle, URLImage) {
     const displayCreateQuestion = document.querySelector(".container-create-questions");
     const hideCreateFeature = document.querySelector(".container-new-quiz");
     hideCreateFeature.classList.add("hidden");
     displayCreateQuestion.classList.remove("hidden");
-
-    // console.log(getTitle);
-    // console.log(getUlrImage);
-    // console.log(getQntNumber);
-    // console.log(getLevelNumber);
-}
-
-function toggleEdit(click){
-    const clickOnQuestion = document.querySelector(".container-create-questions .question");
-    const checkOpacity = clickOnQuestion.querySelector(".changeopacity");
-    console.log(checkOpacity);
-    if(checkOpacity !==null){
-        checkOpacity.classList.remove("changeopacity");
-    }
-    click.classList.add("changeopacity");
-}
-
-function createLevel(levelNumber, quizzTitle, URLImage) {
     let generateLevels = document.querySelector(".container-levels");
     for (let i = 1; i <= levelNumber; i++) {
         generateLevels.innerHTML += `
