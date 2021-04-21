@@ -96,9 +96,15 @@ function createQuestion(getTitle, getUlrImage, getQntNumber, getLevelNumber){
         </div>
         `;
     }
+
         generateQuestions.innerHTML += `
         <button class="next" onclick="validadeQuestionForms(${parseInt(getLevelNumber)}, '${getTitle}', '${getUlrImage}', '${getQntNumber}')">Prosseguir pra criar níveis</button>
         `;
+
+    const displayCreateQuestion = document.querySelector(".container-create-questions");
+    const hideCreateFeature = document.querySelector(".container-new-quiz");
+    hideCreateFeature.classList.add("hidden");
+    displayCreateQuestion.classList.remove("hidden");
 
 }
 
@@ -142,7 +148,6 @@ function validadeQuestionForms(getTitle, getUlrImage, getQntNumber, getLevelNumb
                         image: questionWrongImage,
                         isCorrectAnswer: false
                     }
-
                 ]
             }
         ] 
@@ -182,20 +187,14 @@ function createLevel(levelNumber, quizzTitle, URLImage) {
         generateLevels.innerHTML += `
         <div class="level">
             <h2>Nível ${i}</h2>
-            <input type="text" placeholder="Título do nível">
-            <input type="number" placeholder="% de acerto mínima">
-            <input type="url" placeholder="URL da imagem do nível">
-            <input type="text" placeholder="Descrição do nível">
+            <input type="text" class="title" placeholder="Título do nível">
+            <input type="number" class="percentage" placeholder="% de acerto mínima">
+            <input type="url" class="imageURL" placeholder="URL da imagem do nível">
+            <input type="text" class="description" placeholder="Descrição do nível">
         </div>
         `;
     }
-    generateLevels.innerHTML += `<button onclick="createFinalization('${quizzTitle}', '${URLImage}')">Finalizar Quizz</button>`;
-
-    console.log(quizzTitle)
-    console.log(typeof(quizzTitle))
-
-    console.log(URLImage)
-    console.log(typeof(URLImage))
+    generateLevels.innerHTML += `<button onclick="verifyLevelInput('${quizzTitle}', '${URLImage}')">Finalizar Quizz</button>`;
 
     const displayCreateLevel = document.querySelector(".container-levels");
     const hideCreateQuestions = document.querySelector(".container-create-questions");
@@ -226,4 +225,53 @@ function backHomescreen() {
     const finalizationScreen = document.querySelector(".container-finalization");
     finalizationScreen.classList.add("hidden");
     homescreen.classList.remove("hidden");
+}
+
+function verifyLevelInput(title, URLImage) {
+    const level = document.querySelectorAll(".container-levels .level");
+    let existPercentageEqualsZero = false;
+    let checked = false; // Variável que mudará para true no final do último loop dentro do for, para informar que tudo foi verificado
+    for (let i = 0; i < level.length; i++) {
+        const inputs = level[i].querySelectorAll("input");
+        /*
+         * A variável Inputs criada na linha anterior é um array que contém os 4 campos input de um nível,
+         * seguindo a ordem:
+         * inputs[0] === Título
+         * inputs[1] === % de acerto
+         * inputs[2] === URL da imagem do nível
+         * inputs[3] === Descrição do nível
+         */
+        if(inputs[0].value.length < 10){ 
+            alert(`O título deve possuir no mínimo 10 caracteres (Nível - ${i+1})`);
+            inputs[0].value = "";
+            break;
+        }
+        if(Number(inputs[1].value) < 0 || Number(inputs[1].value) > 100){
+            alert(`A porcentagem de acerto mínima precisa ser um número entre 0 e 100 (Nível - ${i+1})`);
+            inputs[1].value = "";
+            break;
+        } else if(inputs[1].value === ""){
+            alert(`A porcentagem de acerto mínima não pode estar vazia (Nível - ${i+1})`);
+            break;
+        } else if(Number(inputs[1].value) === 0){
+            existPercentageEqualsZero = true;
+        }
+        if(!validURL(inputs[2].value)){
+            alert(`A URL da imagem não é válida (Nível - ${i+1})`);
+            break;
+        }
+        if(inputs[3].value === ""){
+            alert(`A descrição do nível não pode estar vazia (Nível ${i+1})`);
+            break;
+        } else if(inputs[3].value.length < 30) {
+            alert(`A descrição do nível precisa ter no mínimo 30 caracteres (Nível ${i+1})`);
+            break;
+        }
+        if(i === level.length-1) checked = true;
+    }
+    if(checked)
+        if(!existPercentageEqualsZero)
+            alert(`É obrigatório existir pelo menos um nível igual a zero.`);
+        else
+            createFinalization(title, URLImage);
 }
