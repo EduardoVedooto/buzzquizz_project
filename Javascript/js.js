@@ -1,4 +1,4 @@
-
+let request = {};
 
 getQuizzes(); 
 
@@ -119,111 +119,108 @@ function validadeQuestionForms(getLevelNumber, getTitle, getUlrImage, getQntNumb
     let questionModel = {
         title: getTitle,
         image: getUlrImage,
-        questions: [ 
-           
-        ]
-
+        questions: [],
+        levels: [],
     }
     for(let i = 0; i < getQntNumber; i++){
-    const questionTitle = document.querySelector(`.question${i+1} .question-text${i+1}`).value;
-    const questionColor = document.querySelector(`.question${i+1} .color${i+1}`).value;
-    const questionRightAnswer = document.querySelector(`.question${i+1} .right-answer${i+1}`).value;
-    const questionRightImage = document.querySelector(`.question${i+1} .right-answer-img${i+1}`).value;
-    const questionWrongAnswer = document.querySelector(`.question${i+1} .text-wrong${i+1}`).value;
-    const questionWrongImage = document.querySelector(`.question${i+1} .image-wrong${i+1}`).value;
-    const questionWrongAnswer2 = document.querySelector(`.question${i+1} .text-wrong2${i+1}`).value;
-    const questionWrongImage2 = document.querySelector(`.question${i+1} .image-wrong2${i+1}`).value;
-    const questionWrongAnswer3 = document.querySelector(`.question${i+1} .text-wrong3${i+1}`).value;
-    const questionWrongImage3 = document.querySelector(`.question${i+1} .image-wrong3${i+1}`).value;
-    
-    if(questionTitle == ""){
-        alert(`O texto da pergunta ${i+1} não pode ser vazio ou precisa ter mais de 20 caracteres.`);
-        return
-    } else if(questionTitle.length < 20){
-        alert(`O texto da pergunta ${i+1} não pode ser vazio ou precisa ter mais de 20 caracteres.`);
-        return
-    } 
-    if(hexa.test(questionColor)[i+1] == false){
-        alert(`A cor da pergunta ${i+1} precisa conter 6 digitos entre eles números de 0 à 9 e letras de A à F.`);
-        return
-    }
-    if(questionRightAnswer == ""){
-        alert(`A resposta correta da pergunta ${i+1} não pode ser vazio.`);
-        return
-    }
-    if((validURL(questionRightImage)) == false){
-        alert(`Por favor insira um URL válido na resposta correta da pergunta ${i+1}.`);
-        return
-    }
-    if(questionWrongAnswer == ""){
-        alert(`A resposta incorreta 1 da pergunta ${i+1} não pode ser vazio.`);
-        return
-    }
-    if((validURL(questionWrongImage)) == false){
-        alert(`Por favor insira um URL válido na resposta incorreta 1 da pergunta ${i+1}.`);
-        return
-    }
-    if(questionWrongAnswer2 !== ""){
-        sucessAnswer2 = true
-    }
-    if(sucessAnswer2 == true){
-        if((validURL(questionWrongImage2)[i+1]) == false){
-            alert(`Por favor insira um URL válido na resposta incorreta 2 da pergunta ${i+1}.`);
+        const questionTitle = document.querySelector(`.question${i+1} .question-text${i+1}`).value;
+        const questionColor = document.querySelector(`.question${i+1} .color${i+1}`).value;
+        const questionRightAnswer = document.querySelector(`.question${i+1} .right-answer${i+1}`).value;
+        const questionRightImage = document.querySelector(`.question${i+1} .right-answer-img${i+1}`).value;
+        const questionWrongAnswer = document.querySelector(`.question${i+1} .text-wrong${i+1}`).value;
+        const questionWrongImage = document.querySelector(`.question${i+1} .image-wrong${i+1}`).value;
+        const questionWrongAnswer2 = document.querySelector(`.question${i+1} .text-wrong2${i+1}`).value;
+        const questionWrongImage2 = document.querySelector(`.question${i+1} .image-wrong2${i+1}`).value;
+        const questionWrongAnswer3 = document.querySelector(`.question${i+1} .text-wrong3${i+1}`).value;
+        const questionWrongImage3 = document.querySelector(`.question${i+1} .image-wrong3${i+1}`).value;
+        
+        if(questionTitle == ""){
+            alert(`O texto da pergunta ${i+1} não pode ser vazio ou precisa ter mais de 20 caracteres.`);
+            return
+        } else if(questionTitle.length < 20){
+            alert(`O texto da pergunta ${i+1} não pode ser vazio ou precisa ter mais de 20 caracteres.`);
+            return
+        } 
+        if(hexa.test(questionColor)[i+1] == false){
+            alert(`A cor da pergunta ${i+1} precisa conter 6 digitos entre eles números de 0 à 9 e letras de A à F.`);
+            return
         }
-    }
-    if(questionWrongAnswer3 !== ""){
-        sucessAnswer3 = true
-    }
-    if(sucessAnswer3 == true){
-        if((validURL(questionWrongImage3)[i+1]) == false){
-            alert(`Por favor insira um URL válido na resposta incorreta 3 da pergunta ${i+1}.`);
+        if(questionRightAnswer == ""){
+            alert(`A resposta correta da pergunta ${i+1} não pode ser vazio.`);
+            return
         }
-    }
-
-
-    questionModel.questions.push({
-        title: questionTitle,
-        color: questionColor,
-        answers: [
-            {
-                text: questionRightAnswer,
-                image: questionRightImage,
-                isCorrectAnswer: true
-            },
-            {
-                text: questionWrongAnswer,
-                image: questionWrongImage,
-                isCorrectAnswer: false
+        if((validURL(questionRightImage)) == false){
+            alert(`Por favor insira um URL válido na resposta correta da pergunta ${i+1}.`);
+            return
+        }
+        if(questionWrongAnswer == ""){
+            alert(`A resposta incorreta 1 da pergunta ${i+1} não pode ser vazio.`);
+            return
+        }
+        if((validURL(questionWrongImage)) == false){
+            alert(`Por favor insira um URL válido na resposta incorreta 1 da pergunta ${i+1}.`);
+            return
+        }
+        if(questionWrongAnswer2 !== ""){
+            sucessAnswer2 = true
+        }
+        if(sucessAnswer2 == true){
+            if((validURL(questionWrongImage2)[i+1]) == false){
+                alert(`Por favor insira um URL válido na resposta incorreta 2 da pergunta ${i+1}.`);
             }
-        ]
-    })
+        }
+        if(questionWrongAnswer3 !== ""){
+            sucessAnswer3 = true
+        }
+        if(sucessAnswer3 == true){
+            if((validURL(questionWrongImage3)[i+1]) == false){
+                alert(`Por favor insira um URL válido na resposta incorreta 3 da pergunta ${i+1}.`);
+            }
+        }
 
-    if(sucessAnswer2 == true){
-        questionModel.questions[i].answers.push({
-            text: questionWrongAnswer2,
-            image: questionWrongImage2,
-            isCorrectAnswer: false
+
+        questionModel.questions.push({
+            title: questionTitle,
+            color: questionColor,
+            answers: [
+                {
+                    text: questionRightAnswer,
+                    image: questionRightImage,
+                    isCorrectAnswer: true
+                },
+                {
+                    text: questionWrongAnswer,
+                    image: questionWrongImage,
+                    isCorrectAnswer: false
+                }
+            ]
         })
-         sucessAnswer2 = false 
+
+        if(sucessAnswer2 == true){
+            questionModel.questions[i].answers.push({
+                text: questionWrongAnswer2,
+                image: questionWrongImage2,
+                isCorrectAnswer: false
+            })
+            sucessAnswer2 = false 
+        }
+        if(sucessAnswer3 == true){
+            questionModel.questions[i].answers.push({
+                text: questionWrongAnswer3,
+                image: questionWrongImage3,
+                isCorrectAnswer: false
+            })
+            sucessAnswer3 = false
+        }
+
+
     }
-    if(sucessAnswer3 == true){
-        questionModel.questions[i].answers.push({
-            text: questionWrongAnswer3,
-            image: questionWrongImage3,
-            isCorrectAnswer: false
-        })
-        sucessAnswer3 = false
-    }
 
+    request = questionModel;
+    console.log(request);
 
+    createLevel(getLevelNumber, getTitle, getUlrImage);
 }
-    formsQuestions.push(questionModel);
-    console.log(formsQuestions);
-
-    // createLevel(getLevelNumber, getTitle, getUlrImage);
-}
-    // createLevel(getLevelNumber, getTitle, getUlrImage);
-
 
 function createLevel(levelNumber, quizzTitle, URLImage) {
     const displayCreateQuestion = document.querySelector(".container-create-questions");
@@ -316,7 +313,7 @@ function verifyLevelInput(title, URLImage) {
             alert(`A descrição do nível precisa ter no mínimo 30 caracteres (Nível ${i+1})`);
             break;
         }
-        arrayLevels.push({
+        request.levels.push({
             title: inputs[0].value,
             image: inputs[2].value,
             text: inputs[3].value,
@@ -324,7 +321,7 @@ function verifyLevelInput(title, URLImage) {
         });
         if(i === level.length-1) checked = true;
     }
-    console.log(arrayLevels);
+    console.log(request);
     if(checked)
         if(!existPercentageEqualsZero)
             alert(`É obrigatório existir pelo menos um nível igual a zero.`);
