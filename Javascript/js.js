@@ -108,10 +108,14 @@ function createQuestion(getTitle, getUlrImage, getQntNumber, getLevelNumber){
 
 }
 
-function validadeQuestionForms(getTitle, getUlrImage, getQntNumber, getLevelNumber){
 
-    let fail = false;
+
+function validadeQuestionForms(getTitle, getUlrImage, getQntNumber, getLevelNumber){
+    let sucessAnswer2 = false;
+    let sucessAnswer3 = false;
+    let hexa = /[0-9A-Fa-f]{6}/g;
     let formsQuestions = [];
+
     for(let i = 1; i<=getQntNumber; i++){
     const questionTitle = document.querySelector(`.question${i} .question-text${i}`).value;
     const questionColor = document.querySelector(`.question${i} .color${i}`).value;
@@ -123,12 +127,50 @@ function validadeQuestionForms(getTitle, getUlrImage, getQntNumber, getLevelNumb
     const questionWrongImage2 = document.querySelector(`.question${i} .image-wrong2${i}`).value;
     const questionWrongAnswer3 = document.querySelector(`.question${i} .text-wrong3${i}`).value;
     const questionWrongImage3 = document.querySelector(`.question${i} .image-wrong3${i}`).value;
-
-    if(questionTitle == "" && questionTitle.value < 20){
-        fail = true;
-        break
+    
+    if(questionTitle == ""){
+        alert(`O texto da pergunta ${i} não pode ser vazio ou precisa ter mais de 20 caracteres.`);
+        return
+    } else if(questionTitle.length < 20){
+        alert(`O texto da pergunta ${i} não pode ser vazio ou precisa ter mais de 20 caracteres.`);
+        return
+    } 
+    if(hexa.test(questionColor) == false){
+        alert(`A cor da pergunta ${i} precisa conter 6 digitos entre eles números de 0 à 9 e letras de A à F.`);
+        return
     }
-
+    if(questionRightAnswer == ""){
+        alert(`A resposta correta da pergunta ${i} não pode ser vazio.`);
+        return
+    }
+    if((validURL(questionRightImage)) == false){
+        alert(`Por favor insira um URL válido na resposta correta da pergunta ${i}.`);
+        return
+    }
+    if(questionWrongAnswer == ""){
+        alert(`A resposta incorreta 1 da pergunta ${i} não pode ser vazio.`);
+        return
+    }
+    if((validURL(questionWrongImage)) == false){
+        alert(`Por favor insira um URL válido na resposta incorreta 1 da pergunta ${i}.`);
+        return
+    }
+    if(questionWrongAnswer2 !== ""){
+        sucessAnswer2 = true
+    }
+    if(sucessAnswer2 == true){
+        if((validURL(questionWrongImage2)) == false){
+            alert(`Por favor insira um URL válido na resposta incorreta 2 da pergunta ${i}.`);
+        }
+    }
+    if(questionWrongAnswer3 !== ""){
+        sucessAnswer3 = true
+    }
+    if(sucessAnswer3 == true){
+        if((validURL(questionWrongImage3)) == false){
+            alert(`Por favor insira um URL válido na resposta incorreta 3 da pergunta ${i}.`);
+        }
+    }
 
     let questionModel = {
         title: getTitle,
@@ -150,32 +192,30 @@ function validadeQuestionForms(getTitle, getUlrImage, getQntNumber, getLevelNumb
                     }
                 ]
             }
-        ] 
+        ]
     }
 
-    questionModel.questions[0].answers.push({
-        text: questionWrongAnswer2,
-        image: questionWrongImage2,
-        isCorrectAnswer: false
-    })
-
-    questionModel.questions[0].answers.push({
-        text: questionWrongAnswer3,
-        image: questionWrongImage3,
-        isCorrectAnswer: false
-    })
+    // if(sucessAnswer2 == true){
+    //     questionModel.questions[i].answers.push({
+    //         text: questionWrongAnswer2,
+    //         image: questionWrongImage2,
+    //         isCorrectAnswer: false
+    //     })    
+    // }
+    // if(sucessAnswer3 == true){
+    //     questionModel.questions[i].answers.push({
+    //         text: questionWrongAnswer3,
+    //         image: questionWrongImage3,
+    //         isCorrectAnswer: false
+    //     })
+    // }
 
     formsQuestions.push(questionModel);
+    console.log(questionModel);
 }
 
-
-if(fail == true){
-    alert("Algum campo possui informações não aceitas, por favor verifique-as.");
-    return
+    // createLevel(getLevelNumber, getTitle, getUlrImage);
 }
-    createLevel(getLevelNumber, getTitle, getUlrImage);
-}
-
 
 function createLevel(levelNumber, quizzTitle, URLImage) {
     const displayCreateQuestion = document.querySelector(".container-create-questions");
