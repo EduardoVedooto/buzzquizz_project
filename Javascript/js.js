@@ -133,7 +133,7 @@ function createLevel(levelNumber, quizzTitle, URLImage) {
         </div>
         `;
     }
-    generateLevels.innerHTML += `<button onclick="verifyLevelInput(${levelNumber},'${quizzTitle}', '${URLImage}')">Finalizar Quizz</button>`;
+    generateLevels.innerHTML += `<button onclick="verifyLevelInput('${quizzTitle}', '${URLImage}')">Finalizar Quizz</button>`;
 
     const displayCreateLevel = document.querySelector(".container-levels");
     const hideCreateQuestions = document.querySelector(".container-create-questions");
@@ -166,17 +166,51 @@ function backHomescreen() {
     homescreen.classList.remove("hidden");
 }
 
-function verifyLevelInput(levelNumber, title, URLImage) {
+function verifyLevelInput(title, URLImage) {
     const level = document.querySelectorAll(".container-levels .level");
-    //console.log(level[0].querySelectorAll("input")[0].value);
+    let existPercentageEqualsZero = false;
+    let checked = false; // Variável que mudará para true no final do último loop dentro do for, para informar que tudo foi verificado
     for (let i = 0; i < level.length; i++) {
         const inputs = level[i].querySelectorAll("input");
-        console.log(inputs[0].value);
-        if(inputs[0].value.length < 10){
-            alert("O título deve possuir no mínimo 10 caracteres");
+        /*
+         * A variável Inputs criada na linha anterior é um array que contém os 4 campos input de um nível,
+         * seguindo a ordem:
+         * inputs[0] === Título
+         * inputs[1] === % de acerto
+         * inputs[2] === URL da imagem do nível
+         * inputs[3] === Descrição do nível
+         */
+        if(inputs[0].value.length < 10){ 
+            alert(`O título deve possuir no mínimo 10 caracteres (Nível - ${i+1})`);
             inputs[0].value = "";
             break;
         }
+        if(Number(inputs[1].value) < 0 || Number(inputs[1].value) > 100){
+            alert(`A porcentagem de acerto mínima precisa ser um número entre 0 e 100 (Nível - ${i+1})`);
+            inputs[1].value = "";
+            break;
+        } else if(inputs[1].value === ""){
+            alert(`A porcentagem de acerto mínima não pode estar vazia (Nível - ${i+1})`);
+            break;
+        } else if(Number(inputs[1].value) === 0){
+            existPercentageEqualsZero = true;
+        }
+        if(!validURL(inputs[2].value)){
+            alert(`A URL da imagem não é válida (Nível - ${i+1})`);
+            break;
+        }
+        if(inputs[3].value === ""){
+            alert(`A descrição do nível não pode estar vazia (Nível ${i+1})`);
+            break;
+        } else if(inputs[3].value.length < 30) {
+            alert(`A descrição do nível precisa ter no mínimo 30 caracteres (Nível ${i+1})`);
+            break;
+        }
+        if(i === level.length-1) checked = true;
     }
-
+    if(checked)
+        if(!existPercentageEqualsZero)
+            alert(`É obrigatório existir pelo menos um nível igual a zero.`);
+        else
+            createFinalization(title, URLImage);
 }
