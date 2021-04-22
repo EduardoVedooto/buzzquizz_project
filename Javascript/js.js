@@ -365,16 +365,17 @@ function verifyLevelInput() {
             alert(`É obrigatório existir pelo menos um nível igual a zero.`);
         else{
             questionModel.levels = arrayLevels;
-            sendQuizzToServer(questionModel);
+            sendQuizzToServer();
         }
             
 }
 
-function sendQuizzToServer(request){
+function sendQuizzToServer(){
     const promisse = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes", questionModel);
+    promisse.then(createFinalization);
     promisse.catch(failToPost);
 }
 function failToPost(){
     console.log(questionModel);
-    alert("Vefique seu código!")
+    alert("Vefique seu código!");
 }
