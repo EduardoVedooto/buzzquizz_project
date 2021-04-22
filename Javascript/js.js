@@ -17,7 +17,7 @@ function showQuizzes(response){
         <div class="e-quizzes" id=${i+1} onclick="acessQuizz(this.id)">
         <img src="${response.data[i].image}">
         <p>${response.data[i].title}</p>
-        </div>  
+        </div>
         `
     }
 }
@@ -303,6 +303,8 @@ function backHomescreen() {
     getQuizzes();
     const homescreen = document.querySelector(".container");
     const finalizationScreen = document.querySelector(".container-finalization");
+    const quizzScreen = document.querySelector(".container-quizz");
+    quizzScreen.classList.add("hidden");
     finalizationScreen.classList.add("hidden");
     homescreen.classList.remove("hidden");
 }
@@ -362,16 +364,17 @@ function verifyLevelInput() {
             alert(`É obrigatório existir pelo menos um nível igual a zero.`);
         else{
             questionModel.levels = arrayLevels;
-            sendQuizzToServer(questionModel);
+            sendQuizzToServer();
         }
             
 }
 
-function sendQuizzToServer(request){
+function sendQuizzToServer(){
     const promisse = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes", questionModel);
+    promisse.then(createFinalization);
     promisse.catch(failToPost);
 }
 function failToPost(){
     console.log(questionModel);
-    alert("Vefique seu código!")
+    alert("Vefique seu código!");
 }
