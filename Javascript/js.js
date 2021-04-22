@@ -23,11 +23,13 @@ function showQuizzes(response){
 }
 
 function acessQuizz(click){
-    console.log(arrayClick.data);
-    console.log(click);
+
     const aa = arrayClick.data[click-1]
+    // console.log(aa.questions[0].answers.length)
     console.log(aa)
     console.log(aa.questions);
+    console.log(typeof(aa.questions[0].answers))
+    console.log(aa.questions[0].answers.length)
 
     const questionBody = document.querySelector(".container-quizz");
     questionBody.innerHTML = "";
@@ -39,28 +41,24 @@ function acessQuizz(click){
     `
     for(let i=0; i<aa.questions.length ; i++){
         questionBody.innerHTML +=`
-        <div class="each-question">
+        <div class="each-question${i} each-question">
             <div style="background-color:${aa.questions[i].color};" class="title">${aa.questions[i].title}</div>
             <div class="alternatives">
-                <div class="alternative">
-                    <img src="https://criticalhits.com.br/wp-content/uploads/2020/10/estas-afirmacoes-hermione-granger-harry-potter-sao-verdadeiras.jpg">
-                    <p>texto da alternativa</p>   
-                </div>
-                <div class="alternative">
-                    <img src="https://criticalhits.com.br/wp-content/uploads/2020/10/estas-afirmacoes-hermione-granger-harry-potter-sao-verdadeiras.jpg">
-                    <p>texto da alternativa</p>
-                </div>
-                <div class="alternative">
-                    <img src="https://criticalhits.com.br/wp-content/uploads/2020/10/estas-afirmacoes-hermione-granger-harry-potter-sao-verdadeiras.jpg">
-                    <p>texto da alternativa</p>   
-                </div>
-                <div class="alternative">
-                    <img src="https://criticalhits.com.br/wp-content/uploads/2020/10/estas-afirmacoes-hermione-granger-harry-potter-sao-verdadeiras.jpg">
-                    <p>texto da alternativa</p>   
-                </div>
             </div>
         </div>
-        `
+    `
+        for(let j=0; j<aa.questions[i].answers.length; j++){
+            const bb = document.querySelector(`.each-question${i} .alternatives`);
+            bb.innerHTML +=`
+            <div class="alternative">
+                <img src="${aa.questions[i].answers[j].image}">
+                <p>${aa.questions[i].answers[j].text}</p>   
+            </div>
+            `
+        }
+
+
+
     }
 }
 
@@ -252,7 +250,6 @@ function validadeQuestionForms(getLevelNumber, getQntNumber){
         })
         sucessAnswer3 = false
     }
-
 
 }
 
