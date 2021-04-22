@@ -1,5 +1,8 @@
 getQuizzes(); 
 
+//localStorage.setItem("id", JSON.stringify({id: [41]}));
+
+
 function getQuizzes(){
     const promess = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes");
     promess.then(showQuizzes);
@@ -9,16 +12,37 @@ let arrayClick;
 
 function showQuizzes(response){
     arrayClick = response;
-    const eachQuizz = document.querySelector(".quizzes");
-    
-    eachQuizz.innerHTML = "";
-    for(let i = 0; i < response.data.length; i++){
-        eachQuizz.innerHTML +=`
-        <div class="e-quizzes" id=${i+1} onclick="acessQuizz(this.id)">
-        <img src="${response.data[i].image}">
-        <p>${response.data[i].title}</p>
-        </div>
-        `
+    myQuizzesID = JSON.parse(localStorage.id);
+    console.log(response.data[40].id);
+    console.log(myQuizzesID.id.length);
+    const serverQuizzes = document.querySelector(".quizzes");
+    const myQuizzes = document.querySelector(".container-my-quizzes .my-quizzes");
+    serverQuizzes.innerHTML = "";
+    myQuizzes.innerHTML = "";
+    let isMine = false;
+
+    for (let i = 0; i < response.data.length; i++) {
+        for (let j = 0; j < myQuizzesID.id.length; j++) {
+            if(response.data[i].id === myQuizzesID.id[j]){
+                myQuizzes.innerHTML += `
+                <div class="e-quizzes" id=${i+1} onclick="acessQuizz(this.id)">
+                    <img src="${response.data[i].image}">
+                    <p>${response.data[i].title}</p>
+                </div>
+                `;
+                isMine = true;
+                break;
+            } 
+        }
+        if(!isMine){
+            serverQuizzes.innerHTML +=`
+            <div class="e-quizzes" id=${i+1} onclick="acessQuizz(this.id)">
+                <img src="${response.data[i].image}">
+                <p>${response.data[i].title}</p>
+            </div>
+            `;
+        }
+        isMine = false;
     }
 }
 
@@ -26,7 +50,7 @@ function acessQuizz(click){
 
     const aa = arrayClick.data[click-1]
     // console.log(aa.questions[0].answers.length)
-    console.log(aa)
+    console.log(aa);
     console.log(aa.questions);
     console.log(typeof(aa.questions[0].answers))
     console.log(aa.questions[0].answers)
