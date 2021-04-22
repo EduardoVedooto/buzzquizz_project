@@ -29,7 +29,7 @@ function acessQuizz(click){
     console.log(aa)
     console.log(aa.questions);
     console.log(typeof(aa.questions[0].answers))
-    console.log(aa.questions[0].answers.length)
+    console.log(aa.questions[0].answers)
 
     const questionBody = document.querySelector(".container-quizz");
     questionBody.innerHTML = "";
