@@ -17,7 +17,7 @@ function showQuizzes(response){
         <div class="e-quizzes" id=${i+1} onclick="acessQuizz(this.id)">
         <img src="${response.data[i].image}">
         <p>${response.data[i].title}</p>
-        </div>  
+        </div>
         `
     }
 }
@@ -306,6 +306,8 @@ function backHomescreen() {
     getQuizzes();
     const homescreen = document.querySelector(".container");
     const finalizationScreen = document.querySelector(".container-finalization");
+    const quizzScreen = document.querySelector(".container-quizz");
+    quizzScreen.classList.add("hidden");
     finalizationScreen.classList.add("hidden");
     homescreen.classList.remove("hidden");
 }
