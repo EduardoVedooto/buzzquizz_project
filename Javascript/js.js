@@ -9,19 +9,18 @@ let allQuizzes;
 let count = 0;
 let countAnsweredQuestions = 0;
 let quizzIDFromFinalization;
+let isNew = false;
 
 
 function showQuizzes(response){
     allQuizzes = response;
     if(localStorage.length === 0){
-        localStorage.setItem("id", JSON.stringify({id: [27,31,32,41,98]})); // Se não existir nada no localStorage, passa os ID's dos quizzes criados
-    } else {
-        if(!localStorage.id) {
-            localStorage.setItem("id", JSON.stringify({id: [27,31,32,41,98]})); // Se já existir algo no localStorage, porém não for a key id, remover e adicionar os ID's dos quizzes criados
-        }
-        myQuizzesID = JSON.parse(localStorage.id); // Se já existir a key id no localStorage, apenas passar estas ID's para a variável myQuizzes;
+        localStorage.setItem("id", JSON.stringify({id: []})); // Se não existir nada no localStorage, criar a key id
+    } 
+    if(!localStorage.id) {
+        localStorage.setItem("id", JSON.stringify({id: []})); // Se já existir algo no localStorage, porém não for a key id, remover a antiga key e adicionar a nova
     }
-    // console.log(myQuizzesID.id.length);
+    myQuizzesID = JSON.parse(localStorage.id);
     if(myQuizzesID.id.length === 0) {
         const divFirstQuizz = document.querySelector(".create-quizz");
         divFirstQuizz.classList.remove("hidden");
@@ -50,7 +49,7 @@ function showQuizzes(response){
         }
         if(!isMine){
             serverQuizzes.innerHTML +=`
-            <div class="e-quizzes" id=${i+1} onclick="accessQuizz(this.id)">
+            <div class="e-quizzes" id=${i+1} onclick="accessQuizz(this.id, ${false})">
                 <img src="${response.data[i].image}">
                 <p>${response.data[i].title}</p>
             </div>
@@ -62,12 +61,24 @@ function showQuizzes(response){
 
 let selectedQuizzGlobal;
 
-function accessQuizz(click){
-    const selectedQuizz = allQuizzes.data[click-1];
+function accessQuizz(click, isNew){
+    let selectedQuizz;
+    if(isNew === true){
+        for (let i = 0; i < 100; i++) {
+            if(allQuizzes.data[i].id === click){
+                selectedQuizz = allQuizzes.data[i];
+                break;
+            }
+        }
+        const finalization = document.querySelector(".container-finalization");
+        finalization.classList.add("hidden");
+    } else {
+        selectedQuizz = allQuizzes.data[click-1];
+        const serverQuizzes = document.querySelector(".container");
+        serverQuizzes.classList.add("hidden");
+    }
     selectedQuizzGlobal = click;
     const questionBody = document.querySelector(".container-quizz");
-    const serverQuizzes = document.querySelector(".container");
-    serverQuizzes.classList.add("hidden");
     questionBody.classList.remove("hidden");
     questionBody.innerHTML = `
         <div class="header">
@@ -95,6 +106,7 @@ function accessQuizz(click){
             `;
         }
     }
+    
 }
 
 function userChoice(clicked, isCorrect, quizzID, numberOfQuestions){
@@ -137,24 +149,24 @@ function getLevelsFromServer(quizzID){
         let levelReached;
         let foundLevel = false;
         
-        console.log(percentageCorrectAnswers);
-        console.log(allLevels);
-        console.log(allLevels[0].minValue);
+
+
+
 
         for (let i = 0; i < allLevels.length; i++) {
             sortedMinValues.push(allLevels[i].minValue);
         }
         sortedMinValues.sort((a, b) => a - b); // Função que organiza em ordem crescente os números de um array
-        console.log(sortedMinValues);
+
 
         for(let i = 0; i < allLevels.length; i++){
             if(percentageCorrectAnswers < sortedMinValues[i]){
                 if(i === 0) {
                     levelReached = findLevel(sortedMinValues[i], allLevels);
-                    console.log(levelReached);
+            
                 } else {
                     levelReached = findLevel(sortedMinValues[i-1], allLevels);
-                    console.log(levelReached);
+            
                 }
                 foundLevel = true;
                 break;
@@ -162,10 +174,10 @@ function getLevelsFromServer(quizzID){
         }
         if(!foundLevel) {
             levelReached = findLevel(sortedMinValues[allLevels.length-1], allLevels);
-            console.log(levelReached);
+    
         }
 
-        displayLevel(levelReached);
+        displayLevel(levelReached, percentageCorrectAnswers);
     });
 }
 
@@ -173,12 +185,12 @@ function findLevel(minValue, allLevels){
     return allLevels.find(level => level.minValue === minValue);
 }
 
-function displayLevel(level){
+function displayLevel(level, percentageCorrectAnswers){
     const containerResult = document.querySelector(".container-result");
     containerResult.innerHTML = `
     <div class="quizz-result">
         <div class="header">
-            <h2 class="result-title">${level.title}</h2>
+            <h2 class="result-title">${percentageCorrectAnswers}% de acertos: ${level.title}</h2>
         </div>
         <div class="content">
             <img src="${level.image}">
@@ -417,9 +429,6 @@ function createLevel(levelNumber) {
 }
 
 function createFinalization(response){
-    console.log(response);
-    console.log(response.data);
-    console.log(response.data.id);
     const myQuizzes = JSON.parse(localStorage.id);
     myQuizzes.id.push(response.data.id);
     localStorage.setItem("id", JSON.stringify(myQuizzes));
@@ -443,15 +452,19 @@ function createFinalization(response){
 
 function accessQuizzFromFinalization(quizzID){
     quizzIDFromFinalization = quizzID;
-    const promisse = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes/${quizzID}`);
+    const promisse = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes`);
     promisse.then((response) => {
         allQuizzes = response;
-        accessQuizz(quizzIDFromFinalization);
+
+
+        isNew = true;
+        accessQuizz(quizzIDFromFinalization, true);
     });
 }
 
 function backHomescreen() {
     getQuizzes();
+    isNew = false;
     selectedQuizzGlobal = undefined;
     const homescreen = document.querySelector(".container");
     const finalizationScreen = document.querySelector(".container-finalization");
@@ -464,7 +477,7 @@ function backHomescreen() {
 }
 
 function restartQuizz(){
-    accessQuizz(selectedQuizzGlobal);
+    accessQuizz(selectedQuizzGlobal, isNew);
     const targetTop = document.querySelector(".container-quizz .header");
     targetTop.scrollIntoView();
     const containerResult = document.querySelector(".container-result");
@@ -520,7 +533,6 @@ function verifyLevelInput() {
         });
         if(i === level.length-1) checked = true;
     }
-    console.log(arrayLevels);
     if(checked)
         if(!existPercentageEqualsZero)
             alert(`É obrigatório existir pelo menos um nível igual a zero.`);
@@ -536,7 +548,7 @@ function sendQuizzToServer(){
     promisse.then(createFinalization);
     promisse.catch(failToPost);
 }
+
 function failToPost(){
-    console.log(questionModel);
     alert("Vefique seu código!");
 }
