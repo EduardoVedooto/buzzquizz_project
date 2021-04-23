@@ -56,18 +56,8 @@ let ccc = [];
 
 const ddd = document.querySelector(".alternatives")
 
-<<<<<<< HEAD
 function acessQuizz(click){
-=======
-    const aa = arrayClick.data[click-1]
-    // console.log(aa.questions[0].answers.length)
-    console.log(aa);
-    console.log(aa.questions);
-    console.log(typeof(aa.questions[0].answers))
-    console.log(aa.questions[0].answers)
->>>>>>> 6ae7ddce47e0f81a930f1a833aeb87ae7a719a50
 
-    
     const clickedForm = arrayClick.data[click-1]
     const questionBody = document.querySelector(".container-quizz");
     questionBody.innerHTML = "";
@@ -86,18 +76,18 @@ function acessQuizz(click){
             </div>
         </div>
         `
-        for(let j=0; j<clickedForm.questions[i].answers.length; j++){
+        const answersRandomized = clickedForm.questions[i].answers.sort(() => Math.random() - 0.5);
+        for(let j=0; j<answersRandomized.length ; j++){
             const eachQuestionAlternative = document.querySelector(`.each-question${i} .alternatives`);
             eachQuestionAlternative.innerHTML +=`
-            <div id="${j}" class="alternative alternativeID${j}" onclick="userChoice(${clickedForm.questions[i].answers[j].isCorrectAnswer}, this) ">
-                <img src="${clickedForm.questions[i].answers[j].image}">
-                <p>${clickedForm.questions[i].answers[j].text}</p>
+            <div class="alternative" onclick="userChoice(${answersRandomized[j].isCorrectAnswer}) ">
+                <img src="${answersRandomized[j].image}">
+                <p>${answersRandomized[j].text}</p>
             </div>
-            `
+            `;
         }
     }
 }
-
 
 function userChoice(trueOrFalse, clicked){
     // const aa = document.querySelector(".each-question0 .alternatives");
