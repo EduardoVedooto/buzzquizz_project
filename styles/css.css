@@ -228,7 +228,7 @@ body{
 
 .container-create-questions {
     width: 100%;
-    height: auto;
+    height: 100%;
     margin-top: 69px;
     background-color: #FAFAFA;
     display: flex;
@@ -245,11 +245,14 @@ body{
 .container-create-questions .question {
     background-color: #FFF;
     width: 560px;
-    padding: 20px;
+    padding: 15px 20px 20px 20px;
     display: flex;
     flex-direction: column;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
     margin-bottom: 30px;
+    height: 65px;
+    overflow: hidden;
+    transition: all 0.5s;
 }
 
 .container-create-questions .question:last-of-type{
@@ -282,6 +285,22 @@ body{
     margin: 5px 0;
     outline: none;
     padding-left: 20px;
+    min-height: 46px;
+}
+
+.container-create-questions .title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    position: relative;
+}
+
+.container-create-questions .title ion-icon{
+    color: #000;
+    font-size: 23px;
+    position: absolute;
+    right: 0;
+    top: -3;
 }
 
 .container-create-questions .question div {
@@ -654,7 +673,9 @@ body{
     font-size: 25px;
 }
 
-
+.container-create-questions .title ion-icon:hidden{
+    opacity: 0;
+}
 
 
 

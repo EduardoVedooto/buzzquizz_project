@@ -10,6 +10,7 @@ let count = 0;
 let countAnsweredQuestions = 0;
 let quizzIDFromFinalization;
 let isNew = false;
+let questionOpened = null;
 
 
 function showQuizzes(response){
@@ -262,7 +263,10 @@ function createQuestion(getQntNumber, getLevelNumber){
     for(let i = 1; i <= getQntNumber; i++){
         generateQuestions.innerHTML +=`
         <div class="question${i} question">
-            <h2>Pergunta ${i}</h2>
+            <div class="title">
+                <h2>Pergunta ${i}</h2>
+                <ion-icon onclick="collapseQuestion(this)" name="create-outline"></ion-icon>
+            </div>
             <input type="text" placeholder="Texto da pergunta" class="question-text${i} minlength='20'">
             <input type="text" placeholder="Cor de fundo da pergunta" class="color${i}">
             <h2>Resposta correta</h2>
@@ -285,9 +289,9 @@ function createQuestion(getQntNumber, getLevelNumber){
         `;
     }
 
-        generateQuestions.innerHTML += `
+    generateQuestions.innerHTML += `
         <button class="next" onclick="validadeQuestionForms(${parseInt(getLevelNumber)}, '${getQntNumber}')">Prosseguir pra criar níveis</button>
-        `;
+    `;
 
     const displayCreateQuestion = document.querySelector(".container-create-questions");
     const hideCreateFeature = document.querySelector(".container-new-quiz");
@@ -306,6 +310,31 @@ let questionModel = {
 
     ]
 }
+
+let firstQuestion = null;
+
+function collapseQuestion(click) {
+    const question = click.parentNode.parentNode;
+
+    if(firstQuestion === null) {
+        firstQuestion = question;
+        question.setAttribute("style", "height: auto");
+        question.classList.add("opened");
+        click.setAttribute("onclick", "");
+        click.classList.add("hidden");
+    } else {
+        firstQuestion.setAttribute("style", "height: 65px");
+        firstQuestion.classList.remove("opened");
+        firstQuestion.children[0].children[1].setAttribute("onclick", "collapseQuestion(this)");
+        firstQuestion.children[0].children[1].classList.remove("hidden");
+        question.setAttribute("style", "height: auto");
+        question.classList.add("opened");
+        click.setAttribute("onclick", "");
+        click.classList.add("hidden");
+        firstQuestion = question;
+    }
+}
+
 function validadeQuestionForms(getLevelNumber, getQntNumber){
     let sucessAnswer2 = false;
     let sucessAnswer3 = false;
