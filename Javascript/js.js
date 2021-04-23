@@ -53,8 +53,8 @@ function showQuizzes(response){
 }
 
 let selectedQuizz;
+
 function acessQuizz(click){
-    selectedQuizz = click;
     const clickedForm = arrayClick.data[click-1]
     const questionBody = document.querySelector(".container-quizz");
     const serverQuizzes = document.querySelector(".container")
@@ -87,6 +87,7 @@ function acessQuizz(click){
         }
     }
 }
+
 
 function userChoice(clicked, id){
 
@@ -137,6 +138,7 @@ function getLevelsFromServer(){
         console.log(checkPercentage[2].minValue);
         console.log(checkPercentage[3].minValue);
     })
+
 }
 
 function resultScreen(){
