@@ -538,6 +538,7 @@ body{
     flex-direction: column;
     align-items: center;
     margin-bottom: 85px;
+    background-color: #FAFAFA;
 }
 
 .container-result .quizz-result {
@@ -553,6 +554,9 @@ body{
     min-height: 99px;
     background-color: #EC362D;
     margin-bottom: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .container-result .quizz-result .header .result-title {
@@ -598,6 +602,7 @@ body{
     color: #FFF;
     font-size: 21px;
     margin-bottom: 15px;
+    outline: none;
 }
 
 .container-result .buttons .restart-quizz:hover {
@@ -610,6 +615,7 @@ body{
     background: none;
     font-size: 21px;
     color: #818181;
+    outline: none;
 }
 
 .container-result .buttons .home:hover {
@@ -623,12 +629,14 @@ body{
     display: none;
 }
 .filter{
-    filter: opacity(0.3)
+    opacity: 0.3;
 }
-.alternative .removefilter{
-    filter: opacity(1);
+.question-red-color{
+    color: #FF4B4B;
 }
-
+.question-green-color{
+    color: #009C22;
+}
 
 
 

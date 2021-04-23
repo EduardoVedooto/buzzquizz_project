@@ -1,6 +1,6 @@
 getQuizzes(); 
-
-//localStorage.setItem("id", JSON.stringify({id: [41]}));
+// myQuizzesID = {id: []}
+//localStorage.setItem("id", JSON.stringify({id: [27,31,32,41,98]}))
 
 
 function getQuizzes(){
@@ -9,11 +9,11 @@ function getQuizzes(){
 }
 
 let arrayClick;
-
+let count = 0;
 function showQuizzes(response){
     arrayClick = response;
     myQuizzesID = JSON.parse(localStorage.id);
-    console.log(myQuizzesID.id.length);
+    // console.log(myQuizzesID.id.length);
     if(myQuizzesID.id.length === 0) {
         const divFirstQuizz = document.querySelector(".create-quizz");
         divFirstQuizz.classList.remove("hidden");
@@ -52,25 +52,14 @@ function showQuizzes(response){
     }
 }
 
-let ccc = [];
-
-const ddd = document.querySelector(".alternatives")
-
-<<<<<<< HEAD
+let selectedQuizz;
 function acessQuizz(click){
-=======
-    const aa = arrayClick.data[click-1]
-    // console.log(aa.questions[0].answers.length)
-    console.log(aa);
-    console.log(aa.questions);
-    console.log(typeof(aa.questions[0].answers))
-    console.log(aa.questions[0].answers)
->>>>>>> 6ae7ddce47e0f81a930f1a833aeb87ae7a719a50
-
-    
+    selectedQuizz = click;
     const clickedForm = arrayClick.data[click-1]
     const questionBody = document.querySelector(".container-quizz");
-    questionBody.innerHTML = "";
+    const serverQuizzes = document.querySelector(".container")
+    serverQuizzes.classList.add("hidden");
+    questionBody.classList.remove("hidden");
     questionBody.innerHTML = `
         <div class="header">
             <img src="${clickedForm.image}">
@@ -86,37 +75,76 @@ function acessQuizz(click){
             </div>
         </div>
         `
-        for(let j=0; j<clickedForm.questions[i].answers.length; j++){
+        const answersRandomized = clickedForm.questions[i].answers.sort(() => Math.random() - 0.5);
+        for(let j=0; j<answersRandomized.length ; j++){
             const eachQuestionAlternative = document.querySelector(`.each-question${i} .alternatives`);
             eachQuestionAlternative.innerHTML +=`
-            <div id="${j}" class="alternative alternativeID${j}" onclick="userChoice(${clickedForm.questions[i].answers[j].isCorrectAnswer}, this) ">
-                <img src="${clickedForm.questions[i].answers[j].image}">
-                <p>${clickedForm.questions[i].answers[j].text}</p>
+            <div style=" " id="${answersRandomized[j].isCorrectAnswer}" class="alternative" onclick="userChoice(this, this.id)">
+                <img src="${answersRandomized[j].image}">
+                <p>${answersRandomized[j].text}</p>
             </div>
-            `
+            `;
         }
     }
 }
 
+function userChoice(clicked, id){
 
-function userChoice(trueOrFalse, clicked){
-    // const aa = document.querySelector(".each-question0 .alternatives");
-    // console.log(aa);
-    
-    // for(let i=0; i < 4; i++){
-    //     const bb = aa.querySelector(`.alternativeID${i}`);
-    //     console.log(bb);
-    //     if(bb == null){
-    //         break
-    //     } else if(bb[i]){
-            
-    //     }
-    // }
+    const alternatives = clicked.parentNode;
+    for(let i=0; i < alternatives.children.length; i++){
+        alternatives.children[i].classList.add("filter");
+        alternatives.children[i].setAttribute("onclick", " ");
+        if(alternatives.children[i].id === "true"){
+            alternatives.children[i].classList.add("question-green-color");            
+        } else {
+            alternatives.children[i].classList.add("question-red-color");
+        }
+    }
+    if(id === "true"){
+        count++
+    }
+    clicked.classList.remove("filter");
+    const question = alternatives.parentNode
+    const nextQuestion = question.nextElementSibling
+    setTimeout(() => {
+        if(nextQuestion !== null){
+            nextQuestion.scrollIntoView();
+        } else if (nextQuestion === null){
+            getLevelsFromServer();
+            resultScreen();
+        }
+    }, 2000);
 }
 
-function randomizeForms() {
-   return Math.random() - 0.5; 
+function getLevelsFromServer(){
+    const promess1 = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes/${selectedQuizz}`)
+    promess1.then((response)=> {
+        const responseFromServer = response.data;
+        const title = document.querySelector(".result-title");
+        const correctAnswer = Math.round((count/responseFromServer.questions.length)*100)
+        const checkPercentage = responseFromServer.levels
+        let checkValue;
+        for(let i=0; i<checkPercentage.length;i++){
+            if(correctAnswer >= checkPercentage[i].minValue){
+                checkValue = checkPercentage[i];
+                console.log(checkValue);
+            }
+        }
+        console.log(checkValue);
+        console.log(checkPercentage.length);
+        console.log(checkPercentage[0].minValue);
+        console.log(checkPercentage[1].minValue);
+        console.log(checkPercentage[2].minValue);
+        console.log(checkPercentage[3].minValue);
+    })
 }
+
+function resultScreen(){
+    const resultQuizz = document.querySelector(".container-result");
+    resultQuizz.classList.remove("hidden");
+    resultQuizz.scrollIntoView();
+}
+
 
 function createQuizz(){
     const containerQuizz = document.querySelector(".container");
@@ -366,9 +394,17 @@ function backHomescreen() {
     const homescreen = document.querySelector(".container");
     const finalizationScreen = document.querySelector(".container-finalization");
     const quizzScreen = document.querySelector(".container-quizz");
+    const quizzScrenRemove = document.querySelector(".container-result");
     quizzScreen.classList.add("hidden");
     finalizationScreen.classList.add("hidden");
     homescreen.classList.remove("hidden");
+    quizzScrenRemove.classList.add("hidden");
+}
+
+function restartQuizz(){
+    acessQuizz(selectedQuizz);
+    const targetTop = document.querySelector(".container-quizz .header")
+    targetTop.scrollIntoView();
 }
 
 function verifyLevelInput() {
