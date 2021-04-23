@@ -306,7 +306,13 @@ function createLevel(levelNumber) {
     hideCreateQuestions.classList.add("hidden");
 }
 
-function createFinalization(){
+function createFinalization(response){
+    console.log(response);
+    console.log(response.data);
+    console.log(response.data.id);
+    const myQuizzes = JSON.parse(localStorage.id);
+    myQuizzes.id.push(response.data.id);
+    localStorage.setItem("id", JSON.stringify(myQuizzes));
     const screen = document.querySelector(".container-finalization");
     screen.innerHTML = `
         <h1>Seu quizz está pronto!</h1>
