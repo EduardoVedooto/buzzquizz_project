@@ -1,18 +1,26 @@
 getQuizzes(); 
-// myQuizzesID = {id: []}
-//localStorage.setItem("id", JSON.stringify({id: [27,31,32,41,98]}))
-
 
 function getQuizzes(){
     const promess = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes");
     promess.then(showQuizzes);
 }
 
-let arrayClick;
+let allQuizzes;
 let count = 0;
+let countAnsweredQuestions = 0;
+let quizzIDFromFinalization;
+
+
 function showQuizzes(response){
-    arrayClick = response;
-    myQuizzesID = JSON.parse(localStorage.id);
+    allQuizzes = response;
+    if(localStorage.length === 0){
+        localStorage.setItem("id", JSON.stringify({id: [27,31,32,41,98]})); // Se não existir nada no localStorage, passa os ID's dos quizzes criados
+    } else {
+        if(!localStorage.id) {
+            localStorage.setItem("id", JSON.stringify({id: [27,31,32,41,98]})); // Se já existir algo no localStorage, porém não for a key id, remover e adicionar os ID's dos quizzes criados
+        }
+        myQuizzesID = JSON.parse(localStorage.id); // Se já existir a key id no localStorage, apenas passar estas ID's para a variável myQuizzes;
+    }
     // console.log(myQuizzesID.id.length);
     if(myQuizzesID.id.length === 0) {
         const divFirstQuizz = document.querySelector(".create-quizz");
@@ -31,7 +39,7 @@ function showQuizzes(response){
         for (let j = 0; j < myQuizzesID.id.length; j++) {
             if(response.data[i].id === myQuizzesID.id[j]){
                 myQuizzes.innerHTML += `
-                <div class="e-quizzes" id=${i+1} onclick="acessQuizz(this.id)">
+                <div class="e-quizzes" id=${i+1} onclick="accessQuizz(this.id)">
                     <img src="${response.data[i].image}">
                     <p>${response.data[i].title}</p>
                 </div>
@@ -42,7 +50,7 @@ function showQuizzes(response){
         }
         if(!isMine){
             serverQuizzes.innerHTML +=`
-            <div class="e-quizzes" id=${i+1} onclick="acessQuizz(this.id)">
+            <div class="e-quizzes" id=${i+1} onclick="accessQuizz(this.id)">
                 <img src="${response.data[i].image}">
                 <p>${response.data[i].title}</p>
             </div>
@@ -52,34 +60,35 @@ function showQuizzes(response){
     }
 }
 
-let selectedQuizz;
+let selectedQuizzGlobal;
 
-function acessQuizz(click){
-    const clickedForm = arrayClick.data[click-1]
+function accessQuizz(click){
+    const selectedQuizz = allQuizzes.data[click-1];
+    selectedQuizzGlobal = click;
     const questionBody = document.querySelector(".container-quizz");
-    const serverQuizzes = document.querySelector(".container")
+    const serverQuizzes = document.querySelector(".container");
     serverQuizzes.classList.add("hidden");
     questionBody.classList.remove("hidden");
     questionBody.innerHTML = `
         <div class="header">
-            <img src="${clickedForm.image}">
-            <h2>${clickedForm.title}</h2>
+            <img src="${selectedQuizz.image}">
+            <h2>${selectedQuizz.title}</h2>
         </div>
-    `
+    `;
     
-    for(let i=0; i<clickedForm.questions.length ; i++){
+    for(let i=0; i<selectedQuizz.questions.length ; i++){
         questionBody.innerHTML +=`
         <div class="each-question${i} each-question">
-            <div style="background-color:${clickedForm.questions[i].color};" class="title">${clickedForm.questions[i].title}</div>
+            <div style="background-color:${selectedQuizz.questions[i].color};" class="title">${selectedQuizz.questions[i].title}</div>
             <div class="alternatives">
             </div>
         </div>
-        `
-        const answersRandomized = clickedForm.questions[i].answers.sort(() => Math.random() - 0.5);
+        `;
+        const answersRandomized = selectedQuizz.questions[i].answers.sort(() => Math.random() - 0.5);
         for(let j=0; j<answersRandomized.length ; j++){
             const eachQuestionAlternative = document.querySelector(`.each-question${i} .alternatives`);
             eachQuestionAlternative.innerHTML +=`
-            <div style=" " id="${answersRandomized[j].isCorrectAnswer}" class="alternative" onclick="userChoice(this, this.id)">
+            <div class="alternative ${answersRandomized[j].isCorrectAnswer}" onclick="userChoice(this, ${answersRandomized[j].isCorrectAnswer}, ${selectedQuizz.id}, ${selectedQuizz.questions.length})">
                 <img src="${answersRandomized[j].image}">
                 <p>${answersRandomized[j].text}</p>
             </div>
@@ -88,63 +97,103 @@ function acessQuizz(click){
     }
 }
 
-
-function userChoice(clicked, id){
-
+function userChoice(clicked, isCorrect, quizzID, numberOfQuestions){
     const alternatives = clicked.parentNode;
     for(let i=0; i < alternatives.children.length; i++){
         alternatives.children[i].classList.add("filter");
-        alternatives.children[i].setAttribute("onclick", " ");
-        if(alternatives.children[i].id === "true"){
+        alternatives.children[i].setAttribute("onclick", "");
+        alternatives.children[i].setAttribute("style", "cursor: default");
+        if(alternatives.children[i].classList.contains("true")){
             alternatives.children[i].classList.add("question-green-color");            
         } else {
             alternatives.children[i].classList.add("question-red-color");
         }
     }
-    if(id === "true"){
-        count++
+    if(isCorrect){
+        count++;
     }
+    countAnsweredQuestions++;
     clicked.classList.remove("filter");
-    const question = alternatives.parentNode
-    const nextQuestion = question.nextElementSibling
+    const question = alternatives.parentNode;
+    const nextQuestion = question.nextElementSibling;
     setTimeout(() => {
-        if(nextQuestion !== null){
+        if(nextQuestion !== null && !(countAnsweredQuestions === numberOfQuestions)){
             nextQuestion.scrollIntoView();
-        } else if (nextQuestion === null){
-            getLevelsFromServer();
-            resultScreen();
+        }
+        if (countAnsweredQuestions === numberOfQuestions){
+            getLevelsFromServer(quizzID);
         }
     }, 2000);
 }
 
-function getLevelsFromServer(){
-    const promess1 = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes/${selectedQuizz}`)
-    promess1.then((response)=> {
-        const responseFromServer = response.data;
-        const title = document.querySelector(".result-title");
-        const correctAnswer = Math.round((count/responseFromServer.questions.length)*100)
-        const checkPercentage = responseFromServer.levels
-        let checkValue;
-        for(let i=0; i<checkPercentage.length;i++){
-            if(correctAnswer >= checkPercentage[i].minValue){
-                checkValue = checkPercentage[i];
-                console.log(checkValue);
+function getLevelsFromServer(quizzID){
+    const promisse = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes/${quizzID}`);
+    promisse.then((response)=> {
+        const selectedQuizz = response.data;
+        
+        const percentageCorrectAnswers = Math.round((count/selectedQuizz.questions.length)*100);
+        const allLevels = selectedQuizz.levels;
+        const sortedMinValues = [];
+        let levelReached;
+        let foundLevel = false;
+        
+        console.log(percentageCorrectAnswers);
+        console.log(allLevels);
+        console.log(allLevels[0].minValue);
+
+        for (let i = 0; i < allLevels.length; i++) {
+            sortedMinValues.push(allLevels[i].minValue);
+        }
+        sortedMinValues.sort((a, b) => a - b); // Função que organiza em ordem crescente os números de um array
+        console.log(sortedMinValues);
+
+        for(let i = 0; i < allLevels.length; i++){
+            if(percentageCorrectAnswers < sortedMinValues[i]){
+                if(i === 0) {
+                    levelReached = findLevel(sortedMinValues[i], allLevels);
+                    console.log(levelReached);
+                } else {
+                    levelReached = findLevel(sortedMinValues[i-1], allLevels);
+                    console.log(levelReached);
+                }
+                foundLevel = true;
+                break;
             }
         }
-        console.log(checkValue);
-        console.log(checkPercentage.length);
-        console.log(checkPercentage[0].minValue);
-        console.log(checkPercentage[1].minValue);
-        console.log(checkPercentage[2].minValue);
-        console.log(checkPercentage[3].minValue);
-    })
+        if(!foundLevel) {
+            levelReached = findLevel(sortedMinValues[allLevels.length-1], allLevels);
+            console.log(levelReached);
+        }
 
+        displayLevel(levelReached);
+    });
 }
 
-function resultScreen(){
-    const resultQuizz = document.querySelector(".container-result");
-    resultQuizz.classList.remove("hidden");
-    resultQuizz.scrollIntoView();
+function findLevel(minValue, allLevels){
+    return allLevels.find(level => level.minValue === minValue);
+}
+
+function displayLevel(level){
+    const containerResult = document.querySelector(".container-result");
+    containerResult.innerHTML = `
+    <div class="quizz-result">
+        <div class="header">
+            <h2 class="result-title">${level.title}</h2>
+        </div>
+        <div class="content">
+            <img src="${level.image}">
+            <p class="description">${level.text}</p>
+        </div>
+    </div>
+    <div class="buttons">
+        <button class="restart-quizz" onclick="restartQuizz()">Reiniciar Quizz</button>
+        <button class="home" onclick="backHomescreen()">Voltar pra home</button>
+    </div>
+    `;
+    containerResult.classList.remove("hidden");
+    containerResult.scrollIntoView();
+    count = 0;
+    countAnsweredQuestions = 0;
 }
 
 
@@ -342,7 +391,6 @@ function validadeQuestionForms(getLevelNumber, getQntNumber){
     createLevel(getLevelNumber); 
 }
 
-
 function createLevel(levelNumber) {
     const displayCreateQuestion = document.querySelector(".container-create-questions");
     const hideCreateFeature = document.querySelector(".container-new-quiz");
@@ -383,7 +431,7 @@ function createFinalization(response){
             <div class="gradient"></div>
             <p>${questionModel.title}</p>
         </div>
-        <button>Acessar Quizz</button>
+        <button onclick=accessQuizzFromFinalization(${response.data.id})>Acessar Quizz</button>
         <button onclick="backHomescreen()">Voltar pra Home</button>
     `;
     screen.classList.remove("hidden");
@@ -391,8 +439,20 @@ function createFinalization(response){
     hideLevelScreen.classList.add("hidden");
 }
 
+
+
+function accessQuizzFromFinalization(quizzID){
+    quizzIDFromFinalization = quizzID;
+    const promisse = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes/${quizzID}`);
+    promisse.then((response) => {
+        allQuizzes = response;
+        accessQuizz(quizzIDFromFinalization);
+    });
+}
+
 function backHomescreen() {
     getQuizzes();
+    selectedQuizzGlobal = undefined;
     const homescreen = document.querySelector(".container");
     const finalizationScreen = document.querySelector(".container-finalization");
     const quizzScreen = document.querySelector(".container-quizz");
@@ -404,9 +464,11 @@ function backHomescreen() {
 }
 
 function restartQuizz(){
-    acessQuizz(selectedQuizz);
-    const targetTop = document.querySelector(".container-quizz .header")
+    accessQuizz(selectedQuizzGlobal);
+    const targetTop = document.querySelector(".container-quizz .header");
     targetTop.scrollIntoView();
+    const containerResult = document.querySelector(".container-result");
+    containerResult.classList.add("hidden");
 }
 
 function verifyLevelInput() {
