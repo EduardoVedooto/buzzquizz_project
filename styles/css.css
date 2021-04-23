@@ -75,7 +75,6 @@ body{
 }
 
 .container-my-quizzes .title {
-    
     display: flex;
     align-items: center;
 }
@@ -138,6 +137,9 @@ body{
 
 .container .quizzes .e-quizzes:last-child {
     margin-right: 0;
+}
+.container-my-quizzes .my-quizzes .e-quizzes ion-icon{
+    z-index: 4;
 }
 
     /* New Quizz */
@@ -640,6 +642,17 @@ body{
 .question-green-color{
     color: #009C22;
 }
+.img-loading{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.img-loading p{
+    color: #EC362D;
+    font-weight: 400;
+    font-size: 25px;
+}
 
 
 
@@ -697,5 +710,14 @@ body{
     }
     .container-finalization .quizz-card p {
         width: 90%;
+    }
+    .container-quizz .header{
+        width: 100%;
+    }
+    .container-quizz .each-question{
+        width: auto;
+    }
+    .container-result .quizz-result{
+        width: auto;
     }
 }

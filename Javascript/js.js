@@ -12,6 +12,10 @@ let quizzIDFromFinalization;
 
 
 function showQuizzes(response){
+    console.log(response.data);
+    const loading = document.querySelector(".img-loading");
+    loading.classList.remove("img-loading");
+    loading.classList.add("hidden");
     allQuizzes = response;
     if(localStorage.length === 0){
         localStorage.setItem("id", JSON.stringify({id: [27,31,32,41,98]})); // Se não existir nada no localStorage, passa os ID's dos quizzes criados
@@ -33,8 +37,7 @@ function showQuizzes(response){
     const myQuizzes = document.querySelector(".container-my-quizzes .my-quizzes");
     serverQuizzes.innerHTML = "";
     myQuizzes.innerHTML = "";
-    let isMine = false;
-
+    let isMine = false; 
     for (let i = 0; i < response.data.length; i++) {
         for (let j = 0; j < myQuizzesID.id.length; j++) {
             if(response.data[i].id === myQuizzesID.id[j]){
