@@ -13,8 +13,14 @@ let arrayClick;
 function showQuizzes(response){
     arrayClick = response;
     myQuizzesID = JSON.parse(localStorage.id);
-    console.log(response.data[40].id);
     console.log(myQuizzesID.id.length);
+    if(myQuizzesID.id.length === 0) {
+        const divFirstQuizz = document.querySelector(".create-quizz");
+        divFirstQuizz.classList.remove("hidden");
+    } else {
+        const divMyQuizzes = document.querySelector(".container-my-quizzes");
+        divMyQuizzes.classList.remove("hidden");
+    }
     const serverQuizzes = document.querySelector(".quizzes");
     const myQuizzes = document.querySelector(".container-my-quizzes .my-quizzes");
     serverQuizzes.innerHTML = "";
