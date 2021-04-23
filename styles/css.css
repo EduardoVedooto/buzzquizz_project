@@ -597,12 +597,12 @@ body{
 .hidden{
     display: none;
 }
-    /* Opacity Feature */
-.container-create-questions .question .create-question-title .changeopacity{
-    opacity: 0;
+.filter{
+    filter: opacity(0.3)
 }
-
-
+.alternative .removefilter{
+    filter: opacity(1);
+}
 
 
 

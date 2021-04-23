@@ -22,44 +22,61 @@ function showQuizzes(response){
     }
 }
 
+let ccc = [];
+
+const ddd = document.querySelector(".alternatives")
+
 function acessQuizz(click){
 
-    const aa = arrayClick.data[click-1]
-    // console.log(aa.questions[0].answers.length)
-    console.log(aa)
-    console.log(aa.questions);
-    console.log(typeof(aa.questions[0].answers))
-    console.log(aa.questions[0].answers)
-
+    
+    const clickedForm = arrayClick.data[click-1]
     const questionBody = document.querySelector(".container-quizz");
     questionBody.innerHTML = "";
     questionBody.innerHTML = `
         <div class="header">
-            <img src="${aa.image}">
-            <h2>${aa.title}</h2>
+            <img src="${clickedForm.image}">
+            <h2>${clickedForm.title}</h2>
         </div>
     `
-    for(let i=0; i<aa.questions.length ; i++){
+    
+    for(let i=0; i<clickedForm.questions.length ; i++){
         questionBody.innerHTML +=`
         <div class="each-question${i} each-question">
-            <div style="background-color:${aa.questions[i].color};" class="title">${aa.questions[i].title}</div>
+            <div style="background-color:${clickedForm.questions[i].color};" class="title">${clickedForm.questions[i].title}</div>
             <div class="alternatives">
             </div>
         </div>
-    `
-        for(let j=0; j<aa.questions[i].answers.length; j++){
-            const bb = document.querySelector(`.each-question${i} .alternatives`);
-            bb.innerHTML +=`
-            <div class="alternative">
-                <img src="${aa.questions[i].answers[j].image}">
-                <p>${aa.questions[i].answers[j].text}</p>   
+        `
+        for(let j=0; j<clickedForm.questions[i].answers.length; j++){
+            const eachQuestionAlternative = document.querySelector(`.each-question${i} .alternatives`);
+            eachQuestionAlternative.innerHTML +=`
+            <div id="${j}" class="alternative alternativeID${j}" onclick="userChoice(${clickedForm.questions[i].answers[j].isCorrectAnswer}, this) ">
+                <img src="${clickedForm.questions[i].answers[j].image}">
+                <p>${clickedForm.questions[i].answers[j].text}</p>
             </div>
             `
         }
-
-
-
     }
+}
+
+
+function userChoice(trueOrFalse, clicked){
+    // const aa = document.querySelector(".each-question0 .alternatives");
+    // console.log(aa);
+    
+    // for(let i=0; i < 4; i++){
+    //     const bb = aa.querySelector(`.alternativeID${i}`);
+    //     console.log(bb);
+    //     if(bb == null){
+    //         break
+    //     } else if(bb[i]){
+            
+    //     }
+    // }
+}
+
+function randomizeForms() {
+   return Math.random() - 0.5; 
 }
 
 function createQuizz(){
