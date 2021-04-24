@@ -14,7 +14,6 @@ let questionOpened = null;
 
 function showQuizzes(response){
     allQuizzes = response;
-    console.log(allQuizzes);
     if(localStorage.length === 0){
         localStorage.setItem("id", JSON.stringify({id: []})); // Se não existir nada no localStorage, criar a key id
         localStorage.setItem("secretKey", JSON.stringify({key: []}));
@@ -44,7 +43,6 @@ function showQuizzes(response){
                 <div class="e-quizzes" id=${i+1} onclick="accessQuizz(this.id)">
                     <img src="${response.data[i].image}">
                     <p>${response.data[i].title}</p>
-                    <ion-icon onclick="deleteQuizz(this.parentNode.id)" name="trash-outline"></ion-icon>
                 </div>
                 `;
                 isMine = true;
@@ -63,12 +61,30 @@ function showQuizzes(response){
     }
 }
 
+/*
 function deleteQuizz(id){
+    const selectAllMyQuizzes = document.querySelectorAll(".container .container-my-quizzes .my-quizzes div");
+    let selectedQuizz;
+    for(let i=0; i<selectAllMyQuizzes.length; i++){
+        if(selectAllMyQuizzes[i].id == id){
+            selectedQuizz = i
+        }
+    }
+    console.log(myQuizzesID.id)
+    const myKeysToServer = JSON.parse(localStorage.getItem("secretKey"));
+    console.log(myKeysToServer.key);
     const result = confirm("Deseja deletar esse quizz?");
     if(result == true){
-        axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes/${id}`)
+        const promess = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes/${myQuizzesID.id[selectedQuizz]}`,{
+            headers: {
+                'Secret-Key': myKeysToServer.key[selectedQuizz]
+            }
+        })
+        promess.catch((response)=> console.log(response.response))
+        console.log(myQuizzesID[selectedQuizz]);
     }
-}
+}*/
+//<ion-icon onclick="deleteQuizz(this.parentNode.id)" name="trash-outline"></ion-icon>
 
 let selectedQuizzGlobal;
 
@@ -208,7 +224,6 @@ function displayLevel(level, percentageCorrectAnswers){
     countAnsweredQuestions = 0;
 }
 
-
 function createQuizz(){
     const containerQuizz = document.querySelector(".container");
     const createFeature = document.querySelector(".container-new-quiz");
@@ -255,7 +270,6 @@ function validURL(str) {
 
 function createQuestion(getQntNumber, getLevelNumber){
     let generateQuestions = document.querySelector(".container-create-questions");
-    
     for(let i = 1; i <= getQntNumber; i++){
         generateQuestions.innerHTML +=`
         <div class="question${i} question">
@@ -284,16 +298,13 @@ function createQuestion(getQntNumber, getLevelNumber){
         </div>
         `;
     }
-
     generateQuestions.innerHTML += `
         <button class="next" onclick="validadeQuestionForms(${parseInt(getLevelNumber)}, '${getQntNumber}')">Prosseguir pra criar níveis</button>
     `;
-
     const displayCreateQuestion = document.querySelector(".container-create-questions");
     const hideCreateFeature = document.querySelector(".container-new-quiz");
     hideCreateFeature.classList.add("hidden");
     displayCreateQuestion.classList.remove("hidden");
-
 }
 
 let questionModel = {
@@ -311,7 +322,6 @@ let firstQuestion = null;
 
 function collapseQuestion(click) {
     const question = click.parentNode.parentNode;
-
     if(firstQuestion === null) {
         firstQuestion = question;
         question.setAttribute("style", "height: auto");
@@ -334,9 +344,6 @@ function collapseQuestion(click) {
 function validadeQuestionForms(getLevelNumber, getQntNumber){
     let sucessAnswer2 = false;
     let sucessAnswer3 = false;
-    
-
-
     for(let i = 0; i < getQntNumber; i++){
     const questionTitle = document.querySelector(`.question${i+1} .question-text${i+1}`).value;
     const questionColor = document.querySelector(`.question${i+1} .color${i+1}`).value;
@@ -348,7 +355,6 @@ function validadeQuestionForms(getLevelNumber, getQntNumber){
     const questionWrongImage2 = document.querySelector(`.question${i+1} .image-wrong2${i+1}`).value;
     const questionWrongAnswer3 = document.querySelector(`.question${i+1} .text-wrong3${i+1}`).value;
     const questionWrongImage3 = document.querySelector(`.question${i+1} .image-wrong3${i+1}`).value;
-    
     if(questionTitle == ""|| questionTitle.length < 20){
         alert(`O texto da pergunta ${i+1} não pode ser vazio ou precisa ter mais de 20 caracteres.`);
         return
@@ -391,7 +397,6 @@ function validadeQuestionForms(getLevelNumber, getQntNumber){
         }
     }
 
-
     questionModel.questions.push({
         title: questionTitle,
         color: "#"+questionColor,
@@ -425,9 +430,7 @@ function validadeQuestionForms(getLevelNumber, getQntNumber){
         })
         sucessAnswer3 = false
     }
-
 }
-
     createLevel(getLevelNumber); 
 }
 
@@ -449,7 +452,6 @@ function createLevel(levelNumber) {
         `;
     }
     generateLevels.innerHTML += `<button onclick="verifyLevelInput()">Finalizar Quizz</button>`;
-
     const displayCreateLevel = document.querySelector(".container-levels");
     const hideCreateQuestions = document.querySelector(".container-create-questions");
     displayCreateLevel.classList.remove("hidden");
@@ -460,11 +462,9 @@ function createFinalization(response){
     let myQuizzes = JSON.parse(localStorage.id);
     myQuizzes.id.push(response.data.id);
     localStorage.setItem("id", JSON.stringify(myQuizzes));
-
     myQuizzes = JSON.parse(localStorage.secretKey);
     myQuizzes.key.push(response.data.key);
     localStorage.setItem("secretKey", JSON.stringify(myQuizzes));
-
     const screen = document.querySelector(".container-finalization");
     screen.innerHTML = `
         <h1>Seu quizz está pronto!</h1>
@@ -481,15 +481,11 @@ function createFinalization(response){
     hideLevelScreen.classList.add("hidden");
 }
 
-
-
 function accessQuizzFromFinalization(quizzID){
     quizzIDFromFinalization = quizzID;
     const promisse = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes`);
     promisse.then((response) => {
         allQuizzes = response;
-
-
         isNew = true;
         accessQuizz(quizzIDFromFinalization, true);
     });
@@ -507,7 +503,6 @@ function backHomescreen() {
     finalizationScreen.classList.add("hidden");
     homescreen.classList.remove("hidden");
     quizzScrenRemove.classList.add("hidden");
-    
     const createFirstQuizz = document.querySelector(".create-quizz");
     const myQuizzes = JSON.parse(localStorage.length);
     if(myQuizzes > 0 ){
@@ -578,8 +573,7 @@ function verifyLevelInput() {
         else{
             questionModel.levels = arrayLevels;
             sendQuizzToServer();
-        }
-            
+        }    
 }
 
 function sendQuizzToServer(){
