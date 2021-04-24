@@ -15,15 +15,18 @@ let questionOpened = null;
 
 function showQuizzes(response){
     console.log(response.data);
-    const loading = document.querySelector(".img-loading");
-    loading.classList.remove("img-loading");
-    loading.classList.add("hidden");
+    //const loading = document.querySelector(".img-loading");
+    //loading.classList.remove("img-loading");
+    //loading.classList.add("hidden");
     allQuizzes = response;
+    console.log(allQuizzes);
     if(localStorage.length === 0){
         localStorage.setItem("id", JSON.stringify({id: []})); // Se não existir nada no localStorage, criar a key id
+        localStorage.setItem("secretKey", JSON.stringify({key: []}));
     } 
     if(!localStorage.id) {
         localStorage.setItem("id", JSON.stringify({id: []})); // Se já existir algo no localStorage, porém não for a key id, remover a antiga key e adicionar a nova
+        localStorage.setItem("secretKey", JSON.stringify({key: []}));
     }
     myQuizzesID = JSON.parse(localStorage.id);
     if(myQuizzesID.id.length === 0) {
@@ -461,9 +464,14 @@ function createLevel(levelNumber) {
 }
 
 function createFinalization(response){
-    const myQuizzes = JSON.parse(localStorage.id);
+    let myQuizzes = JSON.parse(localStorage.id);
     myQuizzes.id.push(response.data.id);
     localStorage.setItem("id", JSON.stringify(myQuizzes));
+
+    myQuizzes = JSON.parse(localStorage.secretKey);
+    myQuizzes.key.push(response.data.key);
+    localStorage.setItem("secretKey", JSON.stringify(myQuizzes));
+
     const screen = document.querySelector(".container-finalization");
     screen.innerHTML = `
         <h1>Seu quizz está pronto!</h1>
@@ -506,6 +514,12 @@ function backHomescreen() {
     finalizationScreen.classList.add("hidden");
     homescreen.classList.remove("hidden");
     quizzScrenRemove.classList.add("hidden");
+    
+    const createFirstQuizz = document.querySelector(".create-quizz");
+    const myQuizzes = JSON.parse(localStorage.length);
+    if(myQuizzes > 0 ){
+        createFirstQuizz.classList.add("hidden");
+    }
 }
 
 function restartQuizz(){
