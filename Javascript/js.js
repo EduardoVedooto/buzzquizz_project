@@ -44,7 +44,7 @@ function showQuizzes(response){
                 <div class="e-quizzes" id=${i+1} onclick="accessQuizz(this.id)">
                     <img src="${response.data[i].image}">
                     <p>${response.data[i].title}</p>
-                    <ion-icon onclick="deletequizz()" name="trash-outline"></ion-icon>
+                    <ion-icon onclick="deleteQuizz(this.parentNode.id)" name="trash-outline"></ion-icon>
                 </div>
                 `;
                 isMine = true;
@@ -63,12 +63,10 @@ function showQuizzes(response){
     }
 }
 
-function deletequizz(){
-    // const response;
+function deleteQuizz(id){
     const result = confirm("Deseja deletar esse quizz?");
-
     if(result == true){
-
+        axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes/${id}`)
     }
 }
 
@@ -155,31 +153,21 @@ function getLevelsFromServer(quizzID){
     const promisse = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes/${quizzID}`);
     promisse.then((response)=> {
         const selectedQuizz = response.data;
-        
         const percentageCorrectAnswers = Math.round((count/selectedQuizz.questions.length)*100);
         const allLevels = selectedQuizz.levels;
         const sortedMinValues = [];
         let levelReached;
         let foundLevel = false;
-        
-
-
-
-
         for (let i = 0; i < allLevels.length; i++) {
             sortedMinValues.push(allLevels[i].minValue);
         }
         sortedMinValues.sort((a, b) => a - b); // Função que organiza em ordem crescente os números de um array
-
-
         for(let i = 0; i < allLevels.length; i++){
             if(percentageCorrectAnswers < sortedMinValues[i]){
                 if(i === 0) {
                     levelReached = findLevel(sortedMinValues[i], allLevels);
-            
                 } else {
                     levelReached = findLevel(sortedMinValues[i-1], allLevels);
-            
                 }
                 foundLevel = true;
                 break;
@@ -189,7 +177,6 @@ function getLevelsFromServer(quizzID){
             levelReached = findLevel(sortedMinValues[allLevels.length-1], allLevels);
     
         }
-
         displayLevel(levelReached, percentageCorrectAnswers);
     });
 }

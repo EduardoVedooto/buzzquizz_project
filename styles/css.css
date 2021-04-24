@@ -81,6 +81,7 @@ body{
 
 .container-my-quizzes .title h2 {
     margin: 10px 10px 10px 0;
+    color: #000;
 }
 
 .container-my-quizzes .title ion-icon {
@@ -93,6 +94,7 @@ body{
     margin: 70px 0 10px 0;
     font-weight: 700;
     font-size: 20px;
+    color: #000;
 }
 
 .container .quizzes,
