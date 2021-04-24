@@ -12,12 +12,7 @@ let quizzIDFromFinalization;
 let isNew = false;
 let questionOpened = null;
 
-
 function showQuizzes(response){
-    console.log(response.data);
-    const loading = document.querySelector(".img-loading");
-    loading.classList.remove("img-loading");
-    loading.classList.add("hidden");
     allQuizzes = response;
     if(localStorage.length === 0){
         localStorage.setItem("id", JSON.stringify({id: []})); // Se não existir nada no localStorage, criar a key id
@@ -25,6 +20,7 @@ function showQuizzes(response){
     if(!localStorage.id) {
         localStorage.setItem("id", JSON.stringify({id: []})); // Se já existir algo no localStorage, porém não for a key id, remover a antiga key e adicionar a nova
     }
+
     myQuizzesID = JSON.parse(localStorage.id);
     if(myQuizzesID.id.length === 0) {
         const divFirstQuizz = document.querySelector(".create-quizz");
@@ -45,6 +41,7 @@ function showQuizzes(response){
                 <div class="e-quizzes" id=${i+1} onclick="accessQuizz(this.id)">
                     <img src="${response.data[i].image}">
                     <p>${response.data[i].title}</p>
+                    <ion-icon onclick="deletequizz()" name="trash-outline"></ion-icon>
                 </div>
                 `;
                 isMine = true;
@@ -60,6 +57,15 @@ function showQuizzes(response){
             `;
         }
         isMine = false;
+    }
+}
+
+function deletequizz(){
+    // const response;
+    const result = confirm("Deseja deletar esse quizz?");
+
+    if(result == true){
+
     }
 }
 
@@ -463,7 +469,7 @@ function createLevel(levelNumber) {
 function createFinalization(response){
     const myQuizzes = JSON.parse(localStorage.id);
     myQuizzes.id.push(response.data.id);
-    localStorage.setItem("id", JSON.stringify(myQuizzes));
+    localStorage.setItem("id","key", JSON.stringify(arrayLocalStorage));
     const screen = document.querySelector(".container-finalization");
     screen.innerHTML = `
         <h1>Seu quizz está pronto!</h1>

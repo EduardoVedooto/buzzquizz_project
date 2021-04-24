@@ -140,6 +140,14 @@ body{
 }
 .container-my-quizzes .my-quizzes .e-quizzes ion-icon{
     z-index: 4;
+    position: absolute;
+    top: 20px;
+    right: 0;
+    color: #E5E5E5;
+    background-color: #ec362d;
+    font-size: 30px;
+    padding: 5px 0px 5px 5px;
+    border-radius: 10px 0px 0px 11px;
 }
 
     /* New Quizz */
